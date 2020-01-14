@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+@using static Genesis.Escola.MVC.Functions.Enumeradores.EnumCurso;
+<html>
+<head>
+    <partial name="_HeadAluno" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <!-- Inicio da Header-->
+    <partial name="_Header" />
+    <!-- Fim da Header -->
+    <div>
+        <div class="blog-area pt-1 pb-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="blog-sidebar left">
+                            <div class="single-blog-widget mb-50">
+                                <h3>Área do Aluno</h3>
+                                <div class="single-post mb-30">
+                                    <div class="single-post-img">
+                                        <a href="@Url.Action("Perfil", "Alunos")">
+                                            <img src="~/imagens/perfil.png" alt="post">
+                                            <div class="blog-hover">
+                                                <i class="fa fa-link"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="single-post-content">
+                                        <br />
+                                        <h4><a href="@Url.Action("Perfil", "Alunos")">Perfil</a></h4>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="single-post mb-30">
+                                    <div class="single-post-img">
+                                        <a href="@Url.Action("Comunicados", "Alunos")">
+                                            <img src="~/imagens/comunicado.png" alt="comunicado" />
+                                            <div class="blog-hover">
+                                                <i class="fa fa-link"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="single-post-content">
+                                        <br />
+                                        <h4><a href="@Url.Action("Comunicados", "Alunos")">Comunicados</a></h4>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="single-post">
+                                    <div class="single-post-img">
+                                        <a href="@Url.Action("Tarefas", "Alunos")">
+                                            <img src="~/imagens/tarefas.png" alt="tarefas">
+                                            <div class="blog-hover">
+                                                <i class="fa fa-link"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="single-post-content">
+                                        <br />
+                                        <h4><a href="@Url.Action("Tarefas", "Alunos")">Tarefas</a></h4>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="single-post">
+                                    <div class="single-post-img">
+                                        <a href="@Url.Action("Cronograma", "Alunos")">
+                                            <img src="~/imagens/cronograma.png" alt="cronograma">
+                                            <div class="blog-hover">
+                                                <i class="fa fa-link"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="single-post-content">
+                                        <br />
+                                        <h4><a href="@Url.Action("Cronograma", "Alunos")">Cronograma</a></h4>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="single-post">
+                                    <div class="single-post-img">
+                                        <a href="@Url.Action("Boletim", "Alunos")">
+                                            <img src="~/imagens/boletim.png" alt="boletim">
+                                            <div class="blog-hover">
+                                                <i class="fa fa-link"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="single-post-content">
+                                        <br />
+                                        <h4><a href="@Url.Action("Boletim", "Alunos")">Boletim</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Inicio da Footer -->
+    <partial name="_FooterAluno" />
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

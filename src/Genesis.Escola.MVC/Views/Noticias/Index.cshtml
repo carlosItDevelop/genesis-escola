@@ -1,0 +1,40 @@
+﻿@model Genesis.Escola.MVC.Models.NoticiasViewModel
+
+@{
+    ViewData["Title"] = "Noticia Completa";
+}
+
+<div class="banner-area-wrapper">
+    <div class="banner-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="banner-content-wrapper">
+                        <div class="banner-content">
+                            <h2>Notícia</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="courses-details-area blog-area pt-30 pb-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="courses-details">
+                    <div class="course-details-content">
+                        <h2 align="justify">@Html.DisplayFor(model => Model.DescricaoResumida)</h2>
+                        <br />
+                        <br />
+                        <p align="justify"> @Html.Raw(@Model.DescricaoCompleta)  </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

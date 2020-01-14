@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Genesis.Escola.MVC.Models.GaleriaViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!-- Banner Area Start -->
+<div class="banner-area-wrapper">
+    <div class="banner-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="banner-content-wrapper">
+                        <div class="banner-content">
+                            <h2>Galeria de Fotos</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="teacher-area pt-150 pb-105">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <div class="mb-45">
+                        <div class="text-center">
+                            <a href="@Url.Action("Galerias", "Galeria", new { Id = item.Id})"><img src="@Url.Content(ViewData["CaminhoImagem"] + item.Id.ToString())" width="100px" height="100px" alt="galeria"></a>
+
+                            <div class="text-center">
+                                <br />
+                                <h3><a href="#">@Html.DisplayFor(modelItem => item.Titulo)</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,129 @@
+﻿@model Genesis.Escola.MVC.Models.ComunicadoViewModel
+@{
+    ViewData["Title"] = "Excluir Comunicado";
+}
+
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        Páginas
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Comunicado" )">Listagem dos Comunicados</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Excluir Comunicado
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Excluir um Comunicado</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <form asp-action="Excluir" id="ExcluirDados">
+                @Html.HiddenFor(model => model.Id, new { @class = "CodigoExcluir" })
+                <div asp-validation-summary="All" class="text-danger" />
+
+                <div class="form-group has-success">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label asp-for="DataInicio" class="col-form-label"></label>
+                                <input asp-for="DataInicio" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="DataInicio" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-1"></div>
+
+                            <div class="col-md-3">
+                                <label asp-for="DataFinal" class="col-form-label"></label>
+                                <input asp-for="DataFinal" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="DataFinal" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4">
+                                <label class="col-form-label">Acesso de</label>
+                                <select asp-for="TurmaId"
+                                        asp-items="@ViewBag.Turma" class="form-control" disabled></select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="DescricaoResumida" class="col-form-label"></label>
+                                <textarea asp-for="DescricaoResumida" class="form-control" rows="5" readonly="readonly"></textarea>
+                                <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="DescricaoCompleta" class="col-form-label"></label>
+                                <textarea asp-for="DescricaoCompleta" class="form-control input-lg textarea-editor" rows="5" disabled="disabled"></textarea>
+                                <span asp-validation-for="DescricaoCompleta" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+
+                        <a href="@Url.Action("Index", "Comunicado")" class="btn btn-outline-warning mr-1">
+                            Retornar <span class="ft-x"></span>
+                        </a>
+                        <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Excluir</span> <i class="ft-trash-2"></i> </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<partial name="_Excluir" />
+
+
+
+@section Styles {
+    <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
+    <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".textarea-editor").summernote("disable");
+
+            $('.btn-sim').click(function () {
+                var codigo = $(".CodigoExcluir").val();
+                var novaUrl = doByGet('@Url.Action("Excluir","Comunicado")');
+                var model = $("#ExcluirDados").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: novaUrl,
+                    data: model,
+                    success: function (dados) {
+                        window.location.href = '@Url.Action("Index","Comunicado")';
+                    }
+                });
+            });
+        });
+
+        function doByGet(url) {
+            $.get(url);
+        };
+    </script>
+}
+

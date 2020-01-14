@@ -1,0 +1,251 @@
+﻿@model Genesis.Escola.MVC.Models.ConfigViewModel
+@{
+    ViewData["Title"] = "Configurar o Site";
+    Layout = "~/Areas/Administrar/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Configurações</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Dados Básicos
+                    </li>
+                    @*<li class="breadcrumb-item active">Técnico</li>*@
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Configurações Básicas</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+            <form asp-action="IncluirBasico" class="steps-validation wizard-circle" data-ajax="true" data-ajax-method="POST">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="baseIcon-tab1" data-toggle="tab" aria-controls="tabIcon1"
+                           href="#tabIcon1" aria-expanded="true"><i class="ft-mail"></i> Página de Contatos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="baseIcon-tab2" data-toggle="tab" aria-controls="tabIcon2"
+                           href="#tabIcon2" aria-expanded="false"><i class="fa fa-flag"></i> Trabalhe Conosco</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="baseIcon-tab3" data-toggle="tab" aria-controls="tabIcon3"
+                           href="#tabIcon3" aria-expanded="false"><i class="fa fa-phone"></i> Endereço /Telefone</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="baseIcon-tab4" data-toggle="tab" aria-controls="tabIcon4"
+                           href="#tabIcon4" aria-expanded="false"><i class="fa fa-envelope-open"></i> Configurar E-Mail</a>
+                    </li>
+                </ul>
+                <div class="tab-content px-1 pt-1">
+                    <div role="tabpanel" class="tab-pane active" id="tabIcon1" aria-expanded="true" aria-labelledby="baseIcon-tab1">
+                        <br />
+                        <h4 class="form-section">Página de Contatos</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="TituloContato" class="col-md-2 col-form-label">Título:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="TituloContato" class="form-control input-lg" />
+                                        <span asp-validation-for="TituloContato" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="DescricaoContato" class="col-md-2 col-form-label">Descrição: <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="DescricaoContato" class="form-control input-lg" rows="4"></textarea>
+                                        <span asp-validation-for="DescricaoContato" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="MensagemRetContato" class="col-md-2 col-form-label">Mensagem E-Mail: <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="MensagemRetContato" class="form-control input-lg" rows="4"></textarea>
+                                        <span asp-validation-for="MensagemRetContato" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tabIcon2" aria-labelledby="baseIcon-tab2">
+                        <br />
+                        <h4 class="form-section">Trabalhe Conosco</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="TituloTrabalhe" class="col-md-2 col-form-label">Título:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="TituloTrabalhe" class="form-control input-lg" />
+                                        <span asp-validation-for="TituloTrabalhe" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="DescricaoTrabalhe" class="col-md-2 col-form-label">Descrição:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="DescricaoTrabalhe" class="form-control input-lg " rows="4"></textarea>
+                                        <span asp-validation-for="DescricaoTrabalhe" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="MensagemRetTrabalhe" class="col-md-2 col-form-label">Mensagem E-Mail: <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="MensagemRetTrabalhe" class="form-control input-lg" rows="4"></textarea>
+                                        <span asp-validation-for="MensagemRetTrabalhe" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+                            <strong>O E-mail abaixo é da pessoa que vai responder aos candidatos</strong>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label asp-for="EmailRetTrabalhe" class="col-md-2 col-form-label">E-Mail:  <span class="danger">*</span></label>
+                                <div class="col-md-9">
+                                    <input asp-for="EmailRetTrabalhe" class="form-control input-lg " />
+                                    <span asp-validation-for="EmailRetTrabalhe" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tabIcon3" aria-labelledby="baseIcon-tab3">
+                        <br />
+                        <h4 class="form-section">Endereço e Telefones</h4>
+                        <br />
+                        <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+                            <strong>Para quebrar linha coloque o simbolo  &lt;br/&gt; </strong>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="Endereco" class="col-md-3 col-form-label">Endereço:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="Endereco" class="form-control input-lg " rows="4"></textarea>
+                                        <span asp-validation-for="Endereco" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="Telefones" class="col-md-3 col-form-label">Telefone:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea asp-for="Telefones" class="form-control input-lg " rows="4"></textarea>
+                                        <span asp-validation-for="Telefones" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tabIcon4" aria-labelledby="baseIcon-tab4">
+                        <br />
+                        <h4 class="form-section">Configurar E-Mail</h4>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="EmailEnvio" class="col-md-1 col-form-label">E-Mail:  <span class="danger">*</span></label>
+                                    <div class="col-md-10">
+                                        <input asp-for="EmailEnvio" class="form-control input-lg " />
+                                        <span asp-validation-for="EmailEnvio" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="EmailSenha" class="col-md-2 col-form-label">Senha:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="EmailSenha" class="form-control input-lg" type="password" />
+                                        <span asp-validation-for="EmailSenha" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="EmailHost" class="col-md-2 col-form-label">SMTP:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="EmailHost" class="form-control input-lg " />
+                                        <span asp-validation-for="EmailHost" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="EmailPorta" class="col-md-2 col-form-label">Porta:  <span class="danger">*</span></label>
+                                    <div class="col-md-4">
+                                        <input asp-for="EmailPorta" class="form-control input-lg " />
+                                        <span asp-validation-for="EmailPorta" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="EmailSsl">SSL:</label>
+                                    <div class="col-md-4">
+                                        <input asp-for="EmailSsl" class="" />
+                                        <span asp-validation-for="EmailSsl" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-icon btn-outline-primary waves-effect waves-light width-md" type="submit">
+                        <span>Salvar</span>
+                        <i class="fa fa-check-square-o"></i>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
+    <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+}

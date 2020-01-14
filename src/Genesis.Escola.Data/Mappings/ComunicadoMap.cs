@@ -1,0 +1,52 @@
+﻿using Genesis.Escola.Business.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Genesis.Escola.Data.Mappings
+{
+    class ComunicadoMap : IEntityTypeConfiguration<Comunicado>
+    {
+        public void Configure(EntityTypeBuilder<Comunicado> builder)
+        {
+            builder.HasKey(a => a.Id);
+            builder.Property(a => a.Id)
+                .HasColumnName("Id");
+            //   .HasColumnType("UniqueIdentifier");
+
+            builder.Property(a => a.DescricaoResumida)
+                .HasMaxLength(600)
+                .IsRequired()
+                .HasColumnType("varchar(600)")
+                .HasColumnName("DescricaoResumida");
+
+            builder.Property(a => a.DescricaoCompleta)
+                .HasColumnType("text")
+                .HasColumnName("DescricaoCompleta");
+
+            builder.Property(a => a.DataInicio)
+            .HasColumnName("DataInicio")
+            .HasColumnType("date");
+
+            builder.Property(a => a.DataFinal)
+                   .HasColumnName("DataFinal")
+                   .HasColumnType("date");
+
+            builder.Property(p => p.TurmaId)
+                .HasColumnName("TurmaId")
+                .HasMaxLength(7)
+                .HasColumnType("varchar(500)")
+                .IsRequired();
+
+            builder.Property(p => p.CaminhoImagem)
+                .HasMaxLength(255)
+                .HasColumnType("varchar(255)")
+                .HasColumnName("CaminhoImagem");
+
+            builder.ToTable("Comunicados");
+
+        }
+    }
+}

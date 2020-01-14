@@ -1,0 +1,77 @@
+﻿@model Genesis.Escola.MVC.Models.CronogramaViewModel
+
+@{
+    ViewData["Title"] = "Exibir Cronograma";
+    Layout = "~/Views/Shared/_LayOutAluno.cshtml";
+}
+
+@section Styles
+{
+    <style>
+        .pdfobject-container {
+            max-width: 100%;
+            width: 100%;
+            height: 600px;
+            border: 10px solid rgba(0,0,0,.2);
+            margin: 0;
+        }
+    </style>
+}
+
+<div class="about-area pt-1 pb-1">
+    <div class="row">
+        <div class="col-md-8 col-sm-8">
+            <div class="about-content">
+                <h2>@Html.Raw(@Model.DescricaoResumida)  <span></span></h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="teacher-area pb-150">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <br />
+            <p align="justify"> @Html.Raw(@Model.DescricaoCompleta)  </p>
+            <br />
+            <div id="my-pdf">
+                <a href="@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())" data-fancybox="images" data-caption="&lt;b&gt;@Model.DescricaoResumida&lt;/b&gt;&lt;br /&gt;@Model.DescricaoResumida ">
+                    <img src="@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())" />
+                </a>
+            </div>
+            <br />
+            <a class="default-btn" href="@Url.Action("Cronogramas", "Alunos")">Voltar aos Cronogramas</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/PDFObject/pdfobject.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var options = {
+                page: 2,
+
+                pdfOpenParams: {
+                  //  view: "Fit",
+                    pagemode: "bookmarks",
+                    search: "lorem ipsum",
+                    scrollbar: '1',
+                    toolbar: '1',
+                    statusbar: '1',
+                    messages: '1',
+                    navpanes: '1'
+                },
+                forcePDFJS: true,
+                fallbackLink: '<p>Este navegador não suporta PDFs embutidos. Faça o download do PDF para visualizá-lo: <a href="http://get.adobe.com/reader">Download PDF</a></p>'
+            };
+            PDFObject.embed("@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())", "#my-pdf", options);
+        });
+
+    </script>
+}
+
+

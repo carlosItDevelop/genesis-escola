@@ -1,0 +1,63 @@
+﻿@model Genesis.Escola.MVC.Models.AlunosViewModel
+@{
+    ViewData["Title"] = "Aluno Login";
+}
+
+@*<div class="banner-area-wrapper">
+        <div class="banner-area text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="banner-content-wrapper">
+                            <div class="banner-content">
+                                <h2>Área do Aluno</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="contact-area pt-150 pb-140">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="single-contact mb-55">
+                    <img src="~/imagens/login-logo-web-transparent.png" alt="Login Aluno">
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="reply-area">
+                    <form asp-action="Login" asp-controller="Alunos" class="form form-horizontal">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+
+                            <fieldset class="form-group position-relative has-icon-left col-md-4">
+                                <p>Nome Usuário</p>
+                                <input type="text" asp-for="Matricula" class="form-control" id="user-name" placeholder="Digite o Usuário" required>
+                                <span asp-validation-for="Matricula" class="text-danger"></span>
+                            </fieldset>
+                        </div>
+                        <div class="row">
+                            <fieldset class="form-group position-relative has-icon-left col-md-4">
+                                <p>Senha</p>
+                                <input type="password" asp-for="Senha" class="form-control" id="user-password" placeholder="Digite a Senha" required>
+                                <span asp-validation-for="Senha" class="text-danger"></span>
+                            </fieldset>
+                        </div>
+                        <div class="form-actions col-md-4">
+                            <button type="submit" class="btn btn-outline-success btn-block">
+                                <i class="ft-unlock"></i>
+                                Entrar no Sistema
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

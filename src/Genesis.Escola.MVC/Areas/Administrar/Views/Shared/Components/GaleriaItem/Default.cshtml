@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Genesis.Escola.MVC.Models.GaleriaItensViewModel>
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col s3">
+            <img src="@Url.Content(ViewData["CaminhoImagem"] + item.Id.ToString())" width="250" height="250" />
+        </div>
+    }
+</div>

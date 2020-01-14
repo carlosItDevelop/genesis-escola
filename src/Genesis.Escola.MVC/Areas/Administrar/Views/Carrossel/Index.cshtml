@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Genesis.Escola.MVC.Models.CarrosselViewModel>
+
+@{
+    ViewData["Title"] = "Listagem de Imagens do Carrossel";
+    Layout = "~/Areas/Administrar/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        @*<h3 class="content-header-title mb-0">Notícias</h3>*@
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Páginas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Listagem de Imagens do Carrossel
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Lista de Imagens do Carrossel</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <a asp-action="Adicionar" asp-controller="Carrossel" class="btn btn-outline-primary waves-effect waves-light width-md">
+                Adicionar <span class="ft-plus"></span>
+            </a>
+
+            <br />
+            <br />
+            <table class="table" id="Tabela">
+                <thead>
+                    <tr>
+                        @*<th style="width:10%;">
+                            @Html.DisplayNameFor(model => model.DataInicio)
+                        </th>
+                        <th style="width:15%;">
+                            @Html.DisplayNameFor(model => model.DataFinal)
+                        </th>*@
+                        <th style="width:30%;">
+                            @Html.DisplayNameFor(model => model.Titulo)
+                        </th>
+                        <th style="width:25;">
+                            @Html.DisplayNameFor(model => model.CaminhoImagem)
+                        </th>
+                        <th style="width:20%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.DataInicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataFinal)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                        </td>
+                        <td>
+                            @{
+                                <img src="@($"{ViewData["CaminhoImagem"]}{item.Id}")" width="40" height="40" alt="Imagem Padrão" />
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Alterar" asp-controller="Carrossel" asp-route-id=@item.Id class="btn btn-sm btn-outline-success waves-effect waves-light width-xs"> Editar <i class="ft-edit"></i></a>
+                            <a asp-action="Excluir" asp-controller="Carrossel" asp-route-id=@item.Id class="btn btn-sm btn-outline-danger waves-effect waves-light width-xs"> Excluir <i class="ft-trash-2"></i></a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/colReorder.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/fixedHeader.dataTables.min.css">
+}
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/dataTables.fixedHeader.min.js" type="text/javascript"></script>
+
+    <script src="~/Administrar/app-assets/js/scripts/tables/IniciarTables.js" type="text/javascript"></script>
+
+}
+
+

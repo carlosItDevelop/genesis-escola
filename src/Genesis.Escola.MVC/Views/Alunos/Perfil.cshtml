@@ -1,0 +1,41 @@
+﻿@model Genesis.Escola.MVC.Models.AlunosViewModel
+
+@{
+    ViewData["Title"] = "Perfil";
+    Layout = "~/Views/Shared/_LayOutAluno.cshtml";
+}
+
+<div class="about-area pt-1 pb-1">
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <div class="about-content">
+                <h2>Perfil <span>Aluno</span></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="teacher-area pb-150">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-4 text-right">
+                <label>Matricula:</label>
+            </div>
+            <div class="col-md-8">
+                <label>@Model.Matricula</label>
+            </div>
+            <br />
+            <div class="col-md-4 text-right">
+                <label>Nome:</label>
+            </div>
+            <div class="col-md-8">
+                <label>@Model.Nome</label>
+            </div>
+            <div class="col-md-4 text-right">
+                <label>Serie:</label>
+            </div>
+            <div class="col-md-8">
+                <label>@Model.Turma</label>
+            </div>
+        </div>
+    </div>
+</div>

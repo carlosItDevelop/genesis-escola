@@ -1,0 +1,133 @@
+﻿@model Genesis.Escola.MVC.Models.GaleriaViewModel
+@{
+    ViewData["Title"] = "Alterar Galeria";
+}
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        Páginas
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Galeria" )">Listagem da Galeria</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Excluir Galeria
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Excluir Galeria</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <form asp-action="Excluir" id="ExcluirDados">
+                @Html.HiddenFor(model => model.Id, new { @class = "CodigoExcluir" })>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group has-success">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group ">
+                                <label asp-for="Titulo" class="control-label"></label>
+                                <input asp-for="Titulo" class="form-control" readonly="readonly"  />
+                                <span asp-validation-for="Titulo" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Descricao" class="control-label"></label>
+                        <textarea asp-for="Descricao" class="form-control" rows="4" readonly="readonly" ></textarea>
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        @*<fieldset class="form-group">
+                            <label for="basicInputFile">Imagem</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="image/*">
+                                <label class="custom-file-label" for="File1"></label>
+                            </div>
+                        </fieldset>*@
+                    </div>
+                    <div class="col-md-5">
+
+                        <div id="showimage">
+                            <img src="@($"{ViewData["CaminhoImagem"]}")" width="150" height="150" alt="Imagem Padrão" />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-icon btn-outline-success waves-effect waves-light width-md" type="submit">  <span>Salvar</span> <i class="mdi mdi-content-save-outline"></i> </button>
+                            <a asp-action="Index" class="btn btn-icon btn-outline-primary waves-effect waves-light width-md">Voltar a Listagem <i class="mdi mdi-keyboard-backspace"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+    <style>
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Selecionar";
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/extensions/unslider.css">
+}
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#File").change(function () {
+                var previewimages = $("#showimage");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:150px;width: 150px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+        });
+
+        function ValidateSize(file) {
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize > 2) {
+                alert('Tamanho do arquivo maior que 2 MB');
+                // $(file).val(''); //for clearing with Jquery
+            }
+            else {
+
+            }
+        }
+    </script>
+}

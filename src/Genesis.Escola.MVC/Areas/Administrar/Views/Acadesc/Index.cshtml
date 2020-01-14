@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Enviar Arquivo Acadesc";
+}
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Sincronizar Acadesc
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Adicionar Polo</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" asp-controller="Acadesc"
+                  asp-action="EnviarArquivo">
+                <div class="col-md-12">
+                    <fieldset class="form-group">
+                        <label for="basicInputFile">Arquivo Acadesc a Enviar</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="arquivo" name="arquivo" accept=".mdb">
+                            <label class="custom-file-label" id="lblArquivo" for="arquivo">Selecione o arquivo</label>
+                        </div>
+                    </fieldset>
+                    <h4>@ViewData["Erro"]</h4>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-icon btn-outline-success waves-effect waves-light width-md" type="submit">  <span>Enviar</span> <i class="mdi mdi-content-save-outline"></i> </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#arquivo").change(function () {
+                document.getElementById("lblArquivo").textContent = document.getElementById("arquivo").value;
+            });
+        });
+    </script>
+}

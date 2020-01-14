@@ -1,0 +1,85 @@
+﻿@using static Genesis.Escola.MVC.Functions.Enumeradores.EnumCurso;
+<header class="top">
+    <div class="header-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="header-top-left">
+                        <p>Secretaria: (12) 3934-1972 - (12) 3204-5970 - (12) 3204-6400</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="header-top-right text-right">
+                        <ul>
+                            <li><a></a></li>
+                            <li><a href="@Url.Action("Login", "Alunos")" class=""><u>Alunos</u></a></li>
+                            <li><a href="https://apoioaospais.com.br/login.php?identificador=103" target="_blank"><ins>Pais</ins> </a></li>
+                            <li><a href="https://apoioaospais.com.br/diario/?identificador=103" target="_blank"><ins>Professores</ins></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-area two header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-6">
+                    <div class="logo">
+                        <a href="@Url.Action("Index", "Home")"><img src="~/imagens/logo.png" alt="Logo da Escola" /></a>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-6">
+                    <div class="content-wrapper text-right">
+                        <!-- Inicio do Menu Principal -->
+                        <div class="main-menu">
+                            <nav>
+                                <ul>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Home")">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">A Escola</a>
+                                        <ul>
+                                            <li><a href="@Url.Action("Index", "Sobre")">Sobre a Escola</a></li>
+                                            <li><a href="@Url.Action("Index", "Filosofia")">Filosofia</a></li>
+                                            <li><a href="@Url.Action("Index", "Missao")">Missão,Visão e Valores</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Cursos</a>
+                                        <ul>
+                                            <li><a href="@Url.Action("Index", "Cursos", new { curso = EducacaoInfantil  })">Educação Infantil</a></li>
+                                            <li><a href="@Url.Action("Index", "Cursos", new { curso = FundamentalI  })">Ensino Fundamental I</a></li>
+                                            <li><a href="@Url.Action("Index", "Cursos", new { curso = FundamentalII  })">Ensino Fundamental II</a></li>
+                                            <li><a href="@Url.Action("Index", "Cursos", new { curso = Tecnico  })">Técnico</a></li>
+                                            <li><a href="@Url.Action("Index", "Cursos", new { curso = EnsinoMedio  })">Ensino Médio</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Index", "Galeria")">Galeria</a>
+                                    </li>
+                                    @*<li class="hidden-sm">
+                                        <a href="@Url.Action("Index", "Professores")">Nossos Professores</a>
+                                    </li>*@
+                                    <li>
+                                        <a href="#">Contatos</a>
+                                        <ul>
+                                            <li><a href="@Url.Action("Index", "Contato")">Entre em Contato</a></li>
+                                            <li><a href="@Url.Action("Trabalhe", "Contato")">Trabalhe na Maximus </a></li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Fim Do Menu Principal -->
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="mobile-menu hidden-lg hidden-md hidden-sm"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

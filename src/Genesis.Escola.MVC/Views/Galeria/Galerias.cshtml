@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Genesis.Escola.MVC.Models.GaleriaItensViewModel>
+
+@{
+    ViewData["Title"] = "Galerias";
+}
+
+<div class=" pt-10 pb-10">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="course-title">
+                    <h3>@ViewData["Titulo"] </h3>
+                </div>
+                <br />
+                <br />
+                <div class="course-form">
+                    <p align="justify"><h4>@ViewData["Descricao"] </h4> </p>
+                </div>
+                <br />
+                <br />
+            </div>
+            @foreach (var item in Model)
+            {
+                <p class="imglist" style="max-width: 1000px; margin: 10px; float: left; height: 200px; overflow: hidden; width: 200px;">
+                    <a href="@Url.Content(ViewData["CaminhoImagem"] + item.Id.ToString())" data-fancybox="images" data-caption="&lt;b&gt;@item.Titulo&lt;/b&gt;&lt;br /&gt;@item.Resumo ">
+                        <img src="@Url.Content(ViewData["CaminhoImagem"] + item.Id.ToString())" />
+                    </a>
+
+                </p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Principal/js/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script src="~/Principal/js/jquery.fancybox.min.js"></script>
+
+}
+
+@section Styles {
+    <link href="~/Principal/js/jquery.fancybox.min.css" rel="stylesheet" />
+}

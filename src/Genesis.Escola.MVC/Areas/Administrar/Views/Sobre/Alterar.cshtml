@@ -1,0 +1,122 @@
+﻿@model Genesis.Escola.MVC.Models.SobreViewModel
+@{
+    ViewData["Title"] = "Alterar Sobre";
+    Layout = "~/Areas/Administrar/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <h3 class="content-header-title mb-0">Sobre a Escola</h3>
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Páginas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Sobre
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Alterar Sobre</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+            <form asp-action="Alterar" class="form form-horizontal" enctype="multipart/form-data">
+                <div class="form-body">
+                    <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
+                    <input asp-for="CaminhoImagemPrincipal" class="form-control" type="text" hidden="hidden" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label asp-for="SobreResumido" class="col-form-label"></label>
+                            <textarea asp-for="SobreResumido" class="form-control input-lg" rows="6"></textarea>
+                            <span asp-validation-for="SobreResumido" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label asp-for="SobreCompleto" class="col-form-label"></label>
+                            <textarea asp-for="SobreCompleto" class="form-control input-lg textarea-editor" rows="5"></textarea>
+                            <span asp-validation-for="SobreCompleto" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <fieldset class="form-group">
+                            <label for="basicInputFile">Imagem</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="image/*">
+                                <label class="custom-file-label" for="File1"></label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div id="showimage" class="col-6">
+                        <img src="@($"{ViewData["CaminhoImagem"]}")" width="350" height="200" alt="Imagem Padrão" />
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="@Url.Action("Index", "Home" )" class="btn btn-outline-warning mr-1">
+                        Retornar <span class="ft-x"></span>
+                    </a>
+                    <button class="btn btn-icon btn-outline-primary waves-effect waves-light width-md" type="submit">
+                        <span>Salvar</span>
+                        <i class="fa fa-check-square-o"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/extensions/unslider.css">
+}
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
+    <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#File").change(function () {
+                var previewimages = $("#showimage");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:200px;width: 350px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+        });
+
+        function ValidateSize(file) {
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize > 2) {
+                alert('Tamanho do arquivo maior que 2 MB');
+
+            }
+        }
+
+    </script>
+
+}
+

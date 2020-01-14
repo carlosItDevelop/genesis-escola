@@ -1,0 +1,125 @@
+﻿@model Genesis.Escola.MVC.Models.CarrosselViewModel
+
+@{
+    ViewData["Title"] = "Excluir Carrossel";
+    Layout = "~/Areas/Administrar/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        @*<h3 class="content-header-title mb-0">Notícias</h3>*@
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Páginas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Excluir Imagens do Carrossel
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Excluir Imagens do Carrossel</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <form asp-action="Excluir" id="ExcluirDados">
+                @Html.HiddenFor(model => model.Id, new { @class = "CodigoExcluir" })>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input asp-for="CaminhoImagem" class="form-control" type="text" hidden="hidden" />
+
+                <div class="form-group has-success">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group ">
+                                <label asp-for="Titulo" class="control-label"></label>
+                                <input asp-for="Titulo" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Titulo" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Resumo" class="control-label"></label>
+                        <input asp-for="Resumo" class="form-control" readonly="readonly" />
+                        <span asp-validation-for="Resumo" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div id="showimage" class="col-6">
+                            <img src="@($"{ViewData["CaminhoImagem"]}")" width="350" height="200" alt="Imagem Padrão" />
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group ">
+                                    <label asp-for="Titulo" class="control-label"></label>
+                                    <input asp-for="Titulo" class="form-control" readonly="readonly" />
+                                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <a href="@Url.Action("Index", "Carrossel")" class="btn btn-outline-warning mr-1">
+                                Retornar <span class="ft-x"></span>
+                            </a>
+                            <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Excluir</span> <i class="ft-trash-2"></i> </button>
+                        </div>
+                    </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<partial name="_Excluir" />
+
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
+    <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".textarea-editor").summernote("disable");
+
+            $('.btn-sim').click(function () {
+                var codigo = $(".CodigoExcluir").val();
+                var novaUrl = doByGet('@Url.Action("Excluir","Carrossel")');
+                var model = $("#ExcluirDados").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: novaUrl,
+                    data: model,
+                    success: function (dados) {
+                        window.location.href = '@Url.Action("Index","Carrossel")';
+                    }
+                });
+            });
+        });
+
+        function doByGet(url) {
+            $.get(url);
+        };
+    </script>
+}

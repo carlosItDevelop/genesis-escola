@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Genesis.Escola.MVC.Models.UsuarioViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        @*<h3 class="content-header-title mb-0">Notícias</h3>*@
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Páginas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Usuarios Cadastrados
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Listagem de Usuarios</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <a asp-action="Adicionar" asp-controller="Galeria" class="btn btn-outline-primary waves-effect waves-light width-md">
+                Adicionar <span class="ft-plus"></span>
+            </a>
+
+            <br />
+            <br />
+            <table class="table" id="Tabela">
+                <thead>
+                    <tr>
+                        <th style='width: 25%;'>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th style='width: 45%;'>
+                            @Html.DisplayNameFor(model => model.NomeCompleto)
+                        </th>
+                        <th style='width: 25%;'></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NomeCompleto)
+                            </td>
+
+                            <td>
+                                <a asp-action="Editar" asp-controller="Usuario" asp-route-id=@item.Id class="btn btn-sm btn-outline-success waves-effect waves-light width-xs"> Editar <i class="ft-edit"></i></a>
+                                <a asp-action="Excluir" asp-controller="Galeria" asp-route-id=@item.Id class="btn btn-sm btn-outline-danger waves-effect waves-light width-xs"> Excluir <i class="ft-trash-2"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+

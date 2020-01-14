@@ -1,0 +1,258 @@
+﻿@model Genesis.Escola.MVC.Models.PoloViewModel
+@{
+    ViewData["Title"] = "Alterar Polo";
+    Layout = "~/Areas/Administrar/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Páginas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Polo
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Adicionar Polo</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <form asp-action="Alterar" enctype="multipart/form-data">
+                <input asp-for="Id" class="form-control" hidden="hidden" />
+                <input asp-for="CaminhoImagem1" class="form-control" hidden="hidden" />
+                <input asp-for="CaminhoImagem2" class="form-control" hidden="hidden" />
+                <input asp-for="CaminhoImagem3" class="form-control" hidden="hidden" />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Titulo" class="control-label"></label>
+                    <input asp-for="Titulo" class="form-control" />
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card profile-card-with-cover border-primary">
+                            Curso 1
+                            <div class="card-content">
+                                <div class="col-md-12">
+                                    <label asp-for="NomeCurso1" class="col-form-label">Nome do Curso</label>
+                                    <input asp-for="NomeCurso1" class="form-control" />
+                                    <span asp-validation-for="NomeCurso1" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <div class="col-md-12">
+                                        <label asp-for="DescricaoCurso1" class="col-form-label">Descrição do Curso</label>
+                                        <textarea asp-for="DescricaoCurso1" class="form-control" rows="5"></textarea>
+                                        <span asp-validation-for="DescricaoCurso1" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label for="basicInputFile">Imagem</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="File1" name="File1" onchange="ValidateSize(this)" accept="image/*">
+                                                <label class="custom-file-label" for="File1"></label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <div id="Image1">
+                                            <img src="@($"{ViewData["CaminhoImagem1"]}")" width="150" height="150" alt="Imagem Padrão" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label asp-for="LinkCurso1" class="col-form-label">Link do Curso</label>
+                                        <input asp-for="LinkCurso1" class="form-control" />
+                                        <span asp-validation-for="LinkCurso1" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card profile-card-with-cover border-primary">
+                            Curso 2
+                            <div class="card-content">
+                                <div class="col-md-12">
+                                    <label asp-for="NomeCurso2" class="col-form-label">Nome do Curso</label>
+                                    <input asp-for="NomeCurso2" class="form-control" />
+                                    <span asp-validation-for="NomeCurso2" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <div class="col-md-12">
+                                        <label asp-for="DescricaoCurso2" class="col-form-label">Descrição do Curso</label>
+                                        <textarea asp-for="DescricaoCurso2" class="form-control" rows="5"></textarea>
+                                        <span asp-validation-for="DescricaoCurso2" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label for="basicInputFile">Imagem</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="File2" name="File1" onchange="ValidateSize(this)" accept="image/*">
+                                                <label class="custom-file-label" for="File2"></label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <div id="Image2">
+                                            <img src="@($"{ViewData["CaminhoImagem2"]}")" width="150" height="150" alt="Imagem Padrão" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label asp-for="LinkCurso2" class="col-form-label">Link do Curso</label>
+                                        <input asp-for="LinkCurso2" class="form-control" />
+                                        <span asp-validation-for="LinkCurso2" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card profile-card-with-cover border-primary">
+                            Curso 3
+                            <div class="card-content">
+                                <div class="col-md-12">
+                                    <label asp-for="NomeCurso3" class="col-form-label">Nome do Curso</label>
+                                    <input asp-for="NomeCurso3" class="form-control" />
+                                    <span asp-validation-for="NomeCurso3" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <div class="col-md-12">
+                                        <label asp-for="DescricaoCurso3" class="col-form-label">Descrição do Curso</label>
+                                        <textarea asp-for="DescricaoCurso3" class="form-control" rows="5"></textarea>
+                                        <span asp-validation-for="DescricaoCurso3" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label for="basicInputFile">Imagem</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="File3" name="File1" onchange="ValidateSize(this)" accept="image/*">
+                                                <label class="custom-file-label" for="File3"></label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <div id="Image3">
+                                            <img src="@($"{ViewData["CaminhoImagem3"]}")" width="150" height="150" alt="Imagem Padrão" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label asp-for="LinkCurso3" class="col-form-label">Link do Curso</label>
+                                        <input asp-for="LinkCurso3" class="form-control" />
+                                        <span asp-validation-for="LinkCurso3" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-icon btn-outline-success waves-effect waves-light width-md" type="submit">  <span>Salvar</span> <i class="mdi mdi-content-save-outline"></i> </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+@section Styles
+{
+    <style>
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Selecionar";
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/extensions/unslider.css">
+}
+<link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/css/pages/users.min.css">
+
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/js/scripts/cards/card-social.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#File1").change(function () {
+                var previewimages = $("#Image1");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:150px;width: 150px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+
+            $("#File2").change(function () {
+                var previewimages = $("#Image2");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:150px;width: 150px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+
+            $("#File3").change(function () {
+                var previewimages = $("#Image3");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:150px;width: 150px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+        });
+
+        function ValidateSize(file) {
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize > 2) alert('Tamanho do arquivo maior que 2 MB');
+        }
+
+    </script>
+}

@@ -1,0 +1,91 @@
+﻿@model Genesis.Escola.MVC.Models.Emails
+@{
+    ViewData["Title"] = "Entre em Contato";
+}
+
+<div class="map-area">
+    <!-- google-map-area start -->
+    <div class="google-map-area">
+        <!--  Map Section -->
+        <div id="contacts" class="map-area">
+            <div id="googleMap" style="width:100%;height:440px;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3666.012810809953!2d-45.9038494850625!3d-23.242620884842037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc4aa701ece60d%3A0x7265cdff09a14d07!2sR.%20Isac%20Newton%2C%2037%20-%20Jardim%20Oriental%2C%20S%C3%A3o%20Jos%C3%A9%20dos%20Campos%20-%20SP%2C%2012236-240!5e0!3m2!1spt-BR!2sbr!4v1570655765869!5m2!1spt-BR!2sbr" width="100%" height="440px" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-area pt-15 pb-15">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="contact-contents text-center">
+                    <div class="single-contact mb-65">
+                        <div>
+                            <img src="~/imagens/contato-1.png" alt="contato">
+                        </div>
+                        <div class="contact-add">
+                            <h3>Endereço</h3>
+                            @Html.Raw(ViewBag.Endereco)
+                        </div>
+                    </div>
+                    <div class="single-contact mb-65">
+                        <div class="contact-icon">
+                            <img src="~/imagens/contato-maxnet.png" alt="contact">
+                        </div>
+                        <div class="contact-add">
+                            @Html.Raw(ViewBag.Telefone)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7 col-xs-12">
+                <div class="reply-area">
+                    <h3>@Html.Raw(ViewBag.TituloContato)</h3>
+                    <p>
+                        @Html.Raw(ViewBag.DescricaoContato)
+                    </p>
+                    <form asp-action="Index" id="fcontato">
+                        <div asp-validation-summary="All" class="text-danger" />
+                        <div class="row">
+                            <div class="col-md-12 form-group has-success">
+                                <p>Nome</p>
+                                <input asp-for="Nome" class="form-control form-control-success" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 form-group has-success">
+                                <p>E-mail</p>
+                                <input asp-for="Email" class="form-control form-control-success" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 form-group has-success">
+                                <div class="form-group">
+                                    <p>Selecione o Departamento</p>
+                                    <select asp-for="EmailPara" class="form-control form-control-success" asp-items="ViewBag.Selecionador"></select>
+                                    <span asp-validation-for="EmailPara" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group has-success">
+                                <p>Assunto</p>
+                                <input asp-for="Assunto" class="form-control form-control-success" />
+                                <span asp-validation-for="Assunto" class="text-danger"></span>
+                                <p>Mensagem</p>
+                                <textarea asp-for="Mensagem" class="form-control input-lg textarea-editor form-control-success" cols="15" id="FullDescription" rows="10"></textarea>
+                                <span asp-validation-for="Mensagem" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group has-success">
+                            <a href='javascript:fcontato.submit()' class="reply-btn" data-text="send"><span>Enviar a Mensagem</span></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

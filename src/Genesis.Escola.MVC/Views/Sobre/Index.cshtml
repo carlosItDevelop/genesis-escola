@@ -1,0 +1,38 @@
+﻿@model Genesis.Escola.MVC.Models.SobreViewModel
+
+@{
+    ViewData["Title"] = "Sobre a Escola";
+}
+
+<div class="banner-area-wrapper">
+    <div class="banner-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="banner-content-wrapper">
+                        <div class="banner-content">
+                            <h2>Sobre a Escola</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="courses-details-area blog-area pt-30 pb-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="courses-details">
+                    <div class="course-details-content">
+                        <p align="justify"> @Html.Raw(@Model.SobreCompleto)  </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

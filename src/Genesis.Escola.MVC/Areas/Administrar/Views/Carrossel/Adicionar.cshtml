@@ -1,0 +1,142 @@
+﻿@model Genesis.Escola.MVC.Models.CarrosselViewModel
+
+@{
+    ViewData["Title"] = "Adicionar Carrossel";
+    Layout = "~/Areas/Administrar/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        @*<h3 class="content-header-title mb-0">Notícias</h3>*@
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">Páginas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Listagem de Imagens do Carrossel
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Lista de Imagens do Carrossel</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <form asp-action="AdicionarCarrossel" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group has-success">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group ">
+                                <label asp-for="Titulo" class="control-label"></label>
+                                <input asp-for="Titulo" class="form-control" />
+                                <span asp-validation-for="Titulo" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <div class="form-group">
+                            <label asp-for="Resumo" class="control-label"></label>
+                            <input asp-for="Resumo" class="form-control" />
+                            <span asp-validation-for="Resumo" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+                                    <strong>Tamanho imagem 1920 x 820 </strong>
+                                </div>
+                                <fieldset class="form-group">
+                                    <label for="basicInputFile">Imagem</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="image/*">
+                                        <label class="custom-file-label" for="File1"></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div id="showimage" class="col-6">
+                                <img src="~/imagens/semImagem.png" width="350" height="200" class="center" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label asp-for="Ativo" class="control-label"></label>
+                                <select asp-for="Ativo" class="form-control" id="Tipo">
+                                    <option value="A">Ativo</option>
+                                    <option value="I">Inativo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-icon btn-outline-success waves-effect waves-light width-md" type="submit">  <span>Salvar</span> <i class="mdi mdi-content-save-outline"></i> </button>
+                            <a asp-action="Index" class="btn btn-icon btn-outline-primary waves-effect waves-light width-md">Voltar a Listagem <i class="mdi mdi-keyboard-backspace"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+    <style>
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Selecionar";
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/extensions/unslider.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/css/plugins/forms/checkboxes-radios.min.css">
+}
+
+
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/js/scripts/forms/checkbox-radio.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#File").change(function () {
+                var previewimages = $("#showimage");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:200px;width: 350px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+        });
+
+        function ValidateSize(file) {
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize > 2) {
+                alert('Tamanho do arquivo maior que 2 MB');
+
+            }
+        }
+
+    </script>
+}

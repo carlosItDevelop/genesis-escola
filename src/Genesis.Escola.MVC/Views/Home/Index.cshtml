@@ -1,0 +1,149 @@
+﻿@using Genesis.Escola.MVC.Models
+@model dynamic
+
+<section id="slider-container" class="slider-area two">
+    <div class="slider-owl owl-theme owl-carousel">
+        @{
+            @foreach (CarrosselViewModel carrossel in Model.Carrossel)
+            {
+                <div class="single-slide item" style='background-image: url(@($"{ViewData["CaminhoImagem"]}{carrossel.Id}"))'>
+                    <div class="slider-content-area">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="slide-content-wrapper">
+                                        <div class="slide-content text-center">
+                                            <h2>@carrossel.Titulo</h2>
+                                            <p>@carrossel.Resumo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<section class="notice-area two pt-140">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="notice-right-wrapper mb-25 pb-25">
+                    <h3>CONHECENDO A ESCOLA</h3>
+                    <div class="notice-video">
+                        <div class="video-icon video-hover">
+                            <a class="video-popup" href="https://www.youtube.com/watch?v=i0ljVu7Jf1M">
+                                <i class="zmdi zmdi-play"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="notice-left-wrapper">
+                    <h3>Últimas Notícias</h3>
+                    <div class="notice-left">
+                        @{
+                            @foreach (NoticiasViewModel noticia in Model.Noticias)
+                            {
+                                <div class="single-notice-left pb-30">
+                                    <h4>@Html.ValueFor(model => noticia.DataInicio, "{0:dd 'de' MMMM 'de' yyyy}")</h4>
+                                    <p align="justify"><a asp-action="Index" asp-controller="Noticias" asp-route-id=@noticia.Id>@Html.DisplayFor(itemn => noticia.DescricaoResumida)</a></p>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="about-area pb-155">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="about-content">
+                    <h2>BEM VINDO À <span>MAXIMU´S</span></h2>
+                    <p align="Justify">@Model.Sobre.SobreResumido</p>
+                    <a asp-action="Index" asp-controller="Sobre" class="default-btn">Saiba Mais</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="about-img">
+                    <img src="@ViewData["CaminhoImagemSobre"]" alt="Sobre a escola">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="courses-area two pt-150 pb-150 text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="section-title">
+                    <img src="imagens/icon/section1.png" alt="section-title">
+                    <h2>@Model.Polo.Titulo</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="single-course">
+                    <div class="course-img">
+                        <a href="@Model.Polo.LinkCurso1" target="_blank">
+                            <img src="@ViewData["CaminhoImagemPolo1"]" alt="course">
+                            <div class="course-hover">
+                                <i class="fa fa-link"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="course-content">
+                        <h3><a href="@Model.Polo.LinkCurso1" target="_blank">@Model.Polo.NomeCurso1</a></h3>
+                        <p align="justify">@Model.Polo.DescricaoCurso1</p>
+                        <a class="default-btn" href="@Model.Polo.LinkCurso1" target="_blank">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="single-course">
+                    <div class="course-img">
+                        <a href="@Model.Polo.LinkCurso2" target="_blank">
+                            <img src="@ViewData["CaminhoImagemPolo2"]" alt="course">
+                            <div class="course-hover">
+                                <i class="fa fa-link"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="course-content">
+                        <h3><a href="@Model.Polo.LinkCurso2" target="_blank">@Model.Polo.NomeCurso2</a></h3>
+                        <p align="justify">@Model.Polo.DescricaoCurso2</p>
+                        <a class="default-btn" href="@Model.Polo.LinkCurso2" target="_blank">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 hidden-sm col-xs-12">
+                <div class="single-course">
+                    <div class="course-img">
+                        <a href="@Model.Polo.LinkCurso3" target="_blank">
+                            <img src="@ViewData["CaminhoImagemPolo3"]" alt="course">
+                            <div class="course-hover">
+                                <i class="fa fa-link"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="course-content">
+                        <h3><a href="@Model.Polo.LinkCurso3" target="_blank">@Model.Polo.NomeCurso3</a></h3>
+                        <p align="justify">@Model.Polo.DescricaoCurso3</p>
+                        <a class="default-btn" href="@Model.Polo.LinkCurso3" target="_blank">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,60 @@
+﻿@model Genesis.Escola.MVC.Models.GaleriaViewModel
+@{
+    ViewData["Title"] = "Fotos da Galeria";
+}
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        Páginas
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Galeria" )">Listagem da Galeria</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Fotos da Galeria
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Fotos da Galeria</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+            <h5 class="card-title text-center">@Html.DisplayFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })</h5>
+            <p class="card-text" align="justify">
+                @Html.DisplayFor(model => model.Descricao, new { htmlAttributes = new { @class = "form-control" } })
+            </p>
+            <div class="text-center">
+                <img src="@($"{ViewData["CaminhoImagem"]}")" width="150" height="150" alt="Imagem Padrão" />
+            </div>
+            <br />
+            <div>
+                <a asp-controller="GaleriaItem" asp-action="Adicionar" asp-route-id="@Model.Id" class="btn btn-outline-dark waves-effect waves-light"> <span>Nova Foto</span> <i class="ft-camera"></i></a>
+                <a asp-action="Index" class="btn btn-outline-primary waves-effect waves-light"><span>Voltar</span> <i class="ft-log-in"></i></a>
+            </div>
+            <br />
+            <br />
+            <div class="col-lg-12">
+                <div class="card-box ribbon-box">
+                    <div class="ribbon-icon"><i class="mdi mdi-seal text-primary display-4 mr-1"></i></div>
+                    <h5 class="text-primary mt-0 mb-3">Fotos da Galeria</h5>
+                    @await Component.InvokeAsync("GaleriaItem", new { id = Model.Id })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

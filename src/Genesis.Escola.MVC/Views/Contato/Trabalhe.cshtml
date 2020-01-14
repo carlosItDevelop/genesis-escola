@@ -1,0 +1,135 @@
+﻿@model Genesis.Escola.MVC.Models.EmailTrabalhe
+@{
+    ViewData["Title"] = "Trabalhe na Maximu´s";
+}
+
+<div class="contact-area pt-15 pb-15">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="contact-contents text-center">
+                    <div class="single-contact mb-65">
+                        <div>
+                            <img src="~/imagens/contato-1.png" alt="contato">
+                        </div>
+                        <div class="contact-add">
+                            <h3>Endereço</h3>
+                            @Html.Raw(ViewBag.Endereco)
+                        </div>
+                    </div>
+                    <div class="single-contact mb-65">
+                        <div class="contact-icon">
+                            <img src="~/imagens/contato-maxnet.png" alt="contact">
+                        </div>
+                        <div class="contact-add">
+                            @Html.Raw(ViewBag.Telefone)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7 col-xs-12">
+                <div class="reply-area">
+                    <h3>@Html.Raw(ViewBag.TituloTrabalhe)</h3>
+                    <p>
+                        @Html.Raw(ViewBag.DescricaoTrabalhe)
+                    </p>
+                    <form asp-action="Trabalhe" id="ftrabalhe" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger" />
+                        <div class="row">
+                            <div class="col-md-12 form-group has-success">
+                                <p>Nome</p>
+                                <input asp-for="Nome" class="form-control form-control-success" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-12 form-group has-success">
+                                <p>E-mail</p>
+                                <input asp-for="Email" class="form-control form-control-success" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 form-group has-success">
+                                <p>Mensagem</p>
+                                <textarea asp-for="Mensagem" class="form-control input-lg textarea-editor form-control-success" cols="15" id="FullDescription" rows="10"></textarea>
+                                <span asp-validation-for="Mensagem" class="text-danger"></span>
+                            </div>
+                            <br />
+
+                            <div class='input-wrapper'>
+                                <label for='input-file'>
+                                    Anexar Curriculum
+                                </label>
+                                <input id='input-file' type='file' value='' name="File" onchange="ValidateSize(this)" accept="application/pdf,application/msword,
+  application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                                <span asp-validation-for="Attachment" class="text-danger"></span>
+                                
+                                <span id='file-name'></span>
+                            </div>
+                            <br />
+                            <br />
+                        </div>
+                        <a href='javascript:ftrabalhe.submit()' class="reply-btn" data-text="send"><span>Enviar a Mensagem</span></a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function ValidateSize(file) {
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize > 2) alert('Tamanho do arquivo maior que 2 MB');
+        }
+    </script>
+
+    <script>
+        var $input = document.getElementById('input-file'),
+            $fileName = document.getElementById('file-name');
+
+        $input.addEventListener('change', function () {
+            $fileName.textContent = this.value;
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-file input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                min-width: 100%;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                opacity: 0;
+                outline: none;
+                background: white;
+                cursor: inherit;
+                display: block;
+            }
+
+        input[type='file'] {
+            display: none
+        }
+
+        .input-wrapper label {
+            background-color: #3498db;
+            border-radius: 5px;
+            color: #fff;
+            margin: 10px;
+            padding: 6px 20px
+        }
+
+            .input-wrapper label:hover {
+                background-color: #2980b9
+            }
+    </style>
+}

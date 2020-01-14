@@ -1,0 +1,74 @@
+﻿@model Genesis.Escola.MVC.Models.TurmaViewModel
+@{
+    ViewData["Title"] = "Adicionar Turma";
+}
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Home" )">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        Páginas
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Turma" )">Listagem de Turmas</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Adicionar Turmas
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header btn-primary ">
+        <h4 class="card-title" id="horz-layout-basic">Adicionar Turma</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+    </div>
+    <div class="card-content collpase show">
+        <div class="card-body">
+
+            <form asp-action="Adicionar">
+                <div asp-validation-summary="All" class="text-danger">
+
+                </div>
+                <div class="form-group has-success">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label asp-for="Sigla" class="col-form-label"></label>
+                                <input asp-for="Sigla" class="form-control" />
+                                <span asp-validation-for="Sigla" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="Nome" class="col-form-label"></label>
+                                <input asp-for="Nome" class="form-control" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-actions">
+                        <a href="@Url.Action("Index", "Turma")" class="btn btn-outline-warning mr-1">
+                            Retornar <span class="ft-x"></span>
+                        </a>
+                        <button class="btn btn-icon btn-outline-primary waves-effect waves-light width-md" type="submit">
+                            <span>Salvar</span>
+                            <i class="fa fa-check-square-o"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

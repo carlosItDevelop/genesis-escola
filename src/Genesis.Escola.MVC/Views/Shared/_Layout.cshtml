@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+@using static Genesis.Escola.MVC.Functions.Enumeradores.EnumCurso;
+<html>
+<head>
+    <partial name="_Head" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <!-- Inicio da Header-->
+    <partial name="_Header" />
+    <!-- Fim da Header -->
+    <div>
+        @RenderBody()
+    </div>
+
+    <partial name="_Footer" />
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
