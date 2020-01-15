@@ -34,7 +34,7 @@ namespace Genesis.Escola.Data.Mappings
             builder.Property(p => p.TurmaId)
                 .HasColumnName("TurmaId")
                 .HasMaxLength(7)
-                .HasColumnType("varchar(9)")
+                .HasColumnType("varchar(500)")
                 .IsRequired();
 
             builder.Property(p => p.CaminhoImagem)
