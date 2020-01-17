@@ -21,7 +21,7 @@ namespace Genesis.Escola.Data.Mappings
 
             builder.Property(a => a.SobreCompleto)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasColumnType("longtext")
                 .HasColumnName("SobreCompleto");
 
             builder.Property(a => a.CaminhoImagemPrincipal)

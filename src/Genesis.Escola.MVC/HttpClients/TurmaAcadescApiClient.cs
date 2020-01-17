@@ -54,6 +54,13 @@ namespace Genesis.Escola.MVC.HttpClients
             return await resposta.Content.ReadAsAsync<TurmaAcadescViewModel>();
         }
 
+        public async Task<List<TurmaAcadescViewModel>> BuscarAsync(string ciclo)
+        {
+            var resposta = await _httpClient.GetAsync($"v1/TurmaAcadesc/{ciclo}");
+            resposta.EnsureSuccessStatusCode();
+            return await resposta.Content.ReadAsAsync<List<TurmaAcadescViewModel>>();
+        }
+
         #endregion
 
         #region Incluir

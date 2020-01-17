@@ -21,7 +21,7 @@ namespace Genesis.Escola.Data.Mappings
 
             builder.Property(a => a.DescricaoCompleta)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasColumnType("longtext")
                 .HasColumnName("DescricaoCompleta");
 
             builder.Property(a => a.DataInicio)

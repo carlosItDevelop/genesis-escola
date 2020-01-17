@@ -11,5 +11,6 @@ namespace Genesis.Escola.MVC.Models
         public string parent { get; set; }
         public string text { get; set; }
         public bool selected { get; set; }
+        public string state { get; set; }
     }
 }

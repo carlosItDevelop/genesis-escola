@@ -111,11 +111,13 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
             var model = await _api.BuscarAsync(id);
 
             // var turmaId = model.TurmaId.Split("|");
+            //  var teste = await GetTreeData(model.TurmaId);
+            var teste = await GetTreeData3();
 
+            //var teste = await BuscarTurmaGeral(model.TurmaId);
+            //var treeCiclo = await BuscarTurmaGeral(model.TurmaId);
 
-            var treeCiclo = await BuscarTurmaGeral(model.TurmaId);
-
-            ViewBag.Json = JsonConvert.SerializeObject(treeCiclo);
+            ViewBag.Json = JsonConvert.SerializeObject(teste);
 
             return View(model);
         }
@@ -123,7 +125,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Area("Administrar")]
-        public async Task<ActionResult> Editar(Guid id, ComunicadoViewModel model, IFormFile file)
+        public async Task<ActionResult> Editar(Guid id, ComunicadoViewModel model, IFormFile file, string selectedItems)
         {
             ViewBag.Turma = BuscarTurma();
             if (file != null && file.Length > 0)
@@ -245,7 +247,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                     }
                     if (selecionado)
                     {
-                        nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome+ "Selecionado", selected = true });
+                        nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome + " Selecionado", selected = true, state = "state : { checked : true }" });
                         selecionado = false;
                     }
                     else nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome, selected = false });
@@ -260,6 +262,213 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
             return nodes;
         }
 
+        private async Task<List<JsTreeModel>> GetTreeData(string turma = null)
+        {
+            var modelCurso = await _apicursoA.BuscarAsync();
+            var sorted = from x in modelCurso
+                         orderby x.Nome ascending
+                         select x;
+            List<JsTreeModel> nodes = new List<JsTreeModel>();
+
+            string[] turmaId = null;
+            if (turma != null)
+            {
+                turmaId = turma.Split("|");
+            }
+
+            foreach (CursoAcadescViewModel pai in sorted)
+            {
+
+                var turmas = await _apiTurma.BuscarAsync(pai.Codigo);
+                if (turmas.Count() > 0)
+                {
+                    //buscar filhos
+                    JsTreeModel[] filhos = new JsTreeModel[turmas.Count()];
+                    int i = 0;
+                    foreach (var filho in turmas)
+                    {
+                        var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
+                        //  filhos[i] = new JsTreeModel { text = filho.Nome, id = idNode, parent = idNode, attr = new JsTreeAttribute { id = filho.Id.ToString(), selected = true } };
+                        i++;
+                    }
+
+                    nodes.Add(new JsTreeModel
+                    {
+                        text = pai.Nome,
+                        parent = "#",
+                        //   attr = new JsTreeAttribute { id = pai.Codigo.ToString(), selected = false },
+                        //children = filhos
+                    });
+                }
+                else
+                {
+                    nodes.Add(new JsTreeModel
+                    {
+                        text = pai.Nome,
+                        parent = "#",
+                        //   attr = new JsTreeAttribute { id = pai.Codigo.ToString(), selected = false }
+                    }); ;
+                }
+
+            }
+
+
+            return nodes;
+        }
+
+        private async Task<List<JsTreeRoot>> GetTreeData3()
+        {
+            var modelCurso = await _apicursoA.BuscarAsync();
+            var sorted = from x in modelCurso
+                         orderby x.Nome ascending
+                         select x;
+            List<JsTreeRoot> nodes = new List<JsTreeRoot>();
+
+            List<JsTreeModel> child = new List<JsTreeModel>();
+
+            JsTreeModel[] treeModel = new JsTreeModel[10000];
+
+            foreach (CursoAcadescViewModel pai in sorted)
+            {
+                var turmas = await _apiTurma.BuscarAsync(pai.Codigo);
+                if (turmas.Count() > 0)
+                {
+
+                    JsTreeChildren[] filhos = new JsTreeChildren[turmas.Count()];
+                    int i = 0;
+                    foreach (var filho in turmas)
+                    {
+                        var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
+                        filhos[i] = new JsTreeChildren { text = filho.Nome, id = idNode, state = new JsTreeState { opened = true, selected = true, disabled = false } };
+                        i++;
+                    }
+
+
+                    child.Add(new JsTreeModel
+                                {
+                                  text = pai.Nome,
+                                  id = pai.Codigo,
+                                  parent ="#",
+                                  children= filhos 
+                                }
+                    );
+                }
+                else
+                {
+                    child.Add(new JsTreeModel
+                        {
+                            text = pai.Nome,
+                            id = pai.Codigo,
+                            parent = "#"
+                        }
+                    );
+                }
+            }
+            treeModel = child.ToArray();
+
+            nodes.Add(
+                          new JsTreeRoot
+                          {
+                              text = "Todas as Turmas",
+                              children = treeModel
+                          }
+                );
+
+            return nodes;
+        }
+
+        private JsTreeRoot[] GetTreeData2()
+        {
+            var tree = new JsTreeRoot[]
+            {
+                new JsTreeRoot
+                {
+                    text ="Todas as Turmas",
+                    children = new JsTreeModel[]
+                    {
+                        new JsTreeModel
+                        {
+                            text = "Things1", id="20",
+                            state = new JsTreeState { opened = true, selected = false , disabled=false},
+                            parent="#",
+                            children= new JsTreeChildren[]
+                            {
+                               // id="1'",text="lllllllll",
+                               new JsTreeChildren {
+                                   id="1",
+                                   text="jjjjjj",
+                                   state = new JsTreeState { opened = true, selected = true , disabled=false},
+                                   
+                               },
+                               new JsTreeChildren {
+                                   id="12",
+                                   text="2222222222jjjjjj",
+                                   state = new JsTreeState { opened = true, selected = false , disabled=false},
+
+                               }
+                            }
+                        }
+                    }
+                }
+            };
+            return tree;
+        }
+
+        private JsTreeModel[] GetTreeData1()
+        {
+
+
+
+            var tree = new JsTreeModel[]
+            {
+               // new JsTreeModel { text = "Confirm Application",id="10",parent="#",  state = new JsTreeState { opened = true, selected = true , disabled=false}},
+                new JsTreeModel
+                {
+                    text = "Things", id="20",
+                     state = new JsTreeState { opened = true, selected = true , disabled=false},
+                    parent="#",
+                    children= new JsTreeChildren[]
+                    {
+                       // id="1'",text="lllllllll",
+                       // new JsTreeChildren {id="1",text="jjjjjj"}
+                    }
+                    //"text : 'Child 1' ," + "id:'21'",
+                    // children = new JsTreeModel[]
+                   //     {
+                    //        new JsTreeModel { text = "Thing 1", id="21",parent="#"},
+                    //        new JsTreeModel { text = "Thing 2", id="22",parent="#", state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //        new JsTreeModel { text = "Thing 3", id="23",parent="#", state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //        new JsTreeModel
+                    //        {
+                    //            text = "Thing 4",id="24",
+                    //            state = new JsTreeState { opened = true, selected = true , disabled=false},
+                    //            parent="#",
+                    //            children = new JsTreeModel[]
+                    //            {
+                    //                new JsTreeModel { text = "Thing 4.1",id="241",parent="#",  state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //                new JsTreeModel { text = "Thing 4.2",id="242", parent="#",state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //                new JsTreeModel { text = "Thing 4.3",id="243",parent="#", state = new JsTreeState { opened = true, selected = true , disabled=false} }
+                    //            },
+                            //},
+                     //   }
+                },
+                new JsTreeModel
+                {
+                    text = "Colors",
+                    id="40",
+                    state = new JsTreeState { opened = true, selected = true , disabled=false},parent="#"
+                    //children = new JsTreeModel[]
+                    //    {
+                    //        new JsTreeModel { text = "Red", id="41",parent="#",state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //        new JsTreeModel { text = "Green", id="42",parent="#",state = new JsTreeState { opened = true, selected = true , disabled=false}},
+                    //        new JsTreeModel { text = "Blue", id="43",parent="#",state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //        new JsTreeModel { text = "Yellow",id="44", parent="#",state = new JsTreeState { opened = true, selected = true , disabled=false} },
+                    //    }
+                }
+            };
+
+            return tree;
+        }
 
     }
 }

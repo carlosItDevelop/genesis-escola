@@ -10,5 +10,6 @@ namespace Genesis.Escola.Business.Interfaces
     public interface ITurmaAcadescRepositorio : IRepositorioGenerico<TurmaAcadesc>
     {
         Task<TurmaAcadesc> TurmaExiste(string serie, string turma, string turno);
+        Task<IEnumerable<TurmaAcadesc>> PegarTurmasCiclo(string ciclo);
     }
 }

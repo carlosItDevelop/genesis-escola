@@ -21,7 +21,7 @@ namespace Genesis.Escola.Data.Mappings
 
             builder.Property(a => a.Descricao)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasColumnType("longtext")
                 .HasColumnName("Descricao");
 
             builder.ToTable("Missao");

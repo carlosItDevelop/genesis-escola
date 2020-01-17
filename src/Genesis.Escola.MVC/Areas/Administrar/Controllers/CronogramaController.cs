@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
 {
@@ -16,16 +17,21 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
     {
         #region Variaveis
         private readonly CronogramaApiClient _api;
+        private readonly CursoAcadescApiClient _apicursoA;
         private readonly TurmaAcadescApiClient _apiTurma;
         private IConfiguration _configuration;
         #endregion
 
         #region Construtor
-        public CronogramaController(CronogramaApiClient api, TurmaAcadescApiClient apiTurma, IConfiguration configuration)
+        public CronogramaController(CronogramaApiClient api,
+                                    TurmaAcadescApiClient apiTurma,
+                                    CursoAcadescApiClient apicursoA,
+                                    IConfiguration configuration)
         {
             _api = api;
             _apiTurma = apiTurma;
             _configuration = configuration;
+            _apicursoA = apicursoA;
         }
         #endregion
 
@@ -42,16 +48,26 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [Area("Administrar")]
         public async Task<IActionResult> Adicionar()
         {
-            ViewBag.Turma = await BuscarTurma();
+            //ViewBag.Turma = await BuscarTurma();
+            ViewBag.Json = JsonConvert.SerializeObject(await BuscarTurmaGeral());
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Area("Administrar")]
-        public async Task<ActionResult> Adicionar(CronogramaViewModel model, IFormFile file)
+        public async Task<ActionResult> Adicionar(CronogramaViewModel model, IFormFile file, string selectedItems)
         {
-            ViewBag.Turma = await BuscarTurma();
+            List<TreeViewNode> itemsRetornados = JsonConvert.DeserializeObject<List<TreeViewNode>>(selectedItems);
+            var turma = "";
+            // ViewBag.Turma = await BuscarTurma();
+
+            foreach (var item in itemsRetornados)
+            {
+                if (item.id.Length > 3) turma += item.id + '|';
+            }
+
+
             if (file != null && file.Length > 0)
             {
                 if (file != null && file.Length > 0)
@@ -77,6 +93,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                         model.ImagemUpload = bytes;
                     }
                 }
+                model.TurmaId = turma;
                 await _api.IncluirAsync(model);
 
 
@@ -178,5 +195,64 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
             //  turmaLista.OrderBy(x => x.Text);
             return turmaLista.OrderBy(x => x.Text).ToList();
         }
+
+
+        public async Task<List<TreeViewNode>> BuscarTurmaGeral(string turma = null)
+        {
+            List<TreeViewNode> nodes = new List<TreeViewNode>();
+            var modelCurso = await _apicursoA.BuscarAsync();
+            var sorted = from x in modelCurso
+                         orderby x.Nome ascending
+                         select x;
+
+            foreach (CursoAcadescViewModel pai in sorted)
+            {
+                nodes.Add(new TreeViewNode { id = pai.Codigo.ToString(), parent = "#", text = pai.Nome });
+            }
+
+            var modelTurma = await _apiTurma.BuscarAsync();
+
+            var sortedT = from x in modelTurma
+                          orderby x.Nome ascending
+                          select x;
+
+            string[] turmaId = null;
+            if (turma != null)
+            {
+                turmaId = turma.Split("|");
+            }
+
+            foreach (TurmaAcadescViewModel filho in sortedT)
+            {
+                var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
+                Boolean selecionado = false;
+                if (turma != null)
+                {
+                    foreach (var item in turmaId)
+                    {
+                        if (item == idNode)
+                        {
+                            selecionado = true;
+                            break;
+                        }
+                    }
+                    if (selecionado)
+                    {
+                        nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome + "Selecionado", selected = true });
+                        selecionado = false;
+                    }
+                    else nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome, selected = false });
+
+                }
+                else
+                {
+                    nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome, selected = false });
+                }
+            }
+
+            return nodes;
+        }
+
+
     }
 }

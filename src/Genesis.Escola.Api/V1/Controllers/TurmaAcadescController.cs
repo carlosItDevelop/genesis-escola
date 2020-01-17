@@ -42,8 +42,8 @@ namespace Genesis.Escola.Api.V1.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<TurmaAcadescViewModel>> ObterTodos()
         {
-            var noticia = _mapper.Map<IEnumerable<TurmaAcadescViewModel>>(await _turmaRepositorio.ObterTodos());
-            return noticia;
+            var entidade = _mapper.Map<IEnumerable<TurmaAcadescViewModel>>(await _turmaRepositorio.ObterTodos());
+            return entidade;
         }
 
         [HttpGet("{id:guid}")]
@@ -62,6 +62,14 @@ namespace Genesis.Escola.Api.V1.Controllers
             var entidade = _mapper.Map<TurmaAcadescViewModel>(await _turmaRepositorio.TurmaExiste(serie, turma, turno));
             if (entidade == null) return NotFound();
             return Ok(entidade);
+        }
+
+        [HttpGet("{ciclo}")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<TurmaAcadescViewModel>> Obter(string ciclo)
+        {
+            var entidade = _mapper.Map <IEnumerable<TurmaAcadescViewModel>> (await _turmaRepositorio.PegarTurmasCiclo(ciclo));
+            return entidade;
         }
 
         #endregion

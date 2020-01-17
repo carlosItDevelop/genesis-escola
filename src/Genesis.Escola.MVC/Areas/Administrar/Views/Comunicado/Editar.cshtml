@@ -91,6 +91,8 @@
                                     <div class="row">
                                         <div id="my-pdf"></div>
                                     </div>
+                                    <div id="demoTree">
+                                    </div>
                                 </div>
 
                                 <div class="form-actions">
@@ -137,6 +139,7 @@
     <script src="~/Administrar/app-assets/jsTree/jstree.min.js"></script>
 
     <script>
+
         $(document).ready(function () {
             $("#File").change(function () {
                 var fileName = $(this).val();
@@ -144,6 +147,16 @@
                 //replace the "Choose a file" label
                 $(this).next('.custom-file-label').html(resultado);
             });
+
+                        @*var data = @Html.Raw(ViewBag.Json);
+            var data_length = data.length;
+            console.log(data);
+for (var i = 0; i < data_length; i++) {
+
+            };*@
+         //   alert( @Html.Raw(ViewBag.Json));
+
+            console.log(@Html.Raw(ViewBag.Json));
         });
 
         function ValidateSize(file) {
@@ -154,7 +167,8 @@
 
 
     <script type="text/javascript">
-        $(function () {
+
+        @*$(function () {
             $('#jstree').on('changed.jstree', function (e, data) {
                 var i, j;
                 var postedItems = [];
@@ -189,9 +203,51 @@
                     "keep_selected_style": false
                 },
                 "plugins": ["wholerow", "checkbox"],
-
             });
-        });
+        });*@
+
+        $('#jstree').jstree
+            (
+                {
+                    "core":
+                    {
+                        "themes":
+                        {
+                            "variant": "large"
+                        },
+                        "data":  @Html.Raw(ViewBag.Json),
+                    },
+                    "checkbox": {"keep_selected_style": false},
+                    "plugins": ["wholerow", "checkbox"],
+                }
+            );
+        
+
+
+        //$('#jstree').jstree({ 'core' : {
+        //    'data' : [
+        //       'Simple root node',
+        //        {
+        //           'text': 'Root node 2',
+        //            'state':
+        //            {
+        //                'opened' : true,
+        //                'selected' : true
+        //            },
+        //           'children': [
+        //                    {
+        //                        'text': 'Child 1'
+        //                    },
+        //                    {
+        //                       'text': 'Child 2'
+        //                    }
+        //                ]
+        //        }
+        //    ]
+
+        //}
+        //});
+
     </script>
 
 

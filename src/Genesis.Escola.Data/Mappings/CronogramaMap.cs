@@ -20,7 +20,7 @@ namespace Genesis.Escola.Data.Mappings
                 .HasColumnName("DescricaoResumida");
 
             builder.Property(a => a.DescricaoCompleta)
-                .HasColumnType("text")
+                .HasColumnType("longtext")
                 .HasColumnName("DescricaoCompleta");
 
             builder.Property(a => a.DataInicio)

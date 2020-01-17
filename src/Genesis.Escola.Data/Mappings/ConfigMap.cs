@@ -88,12 +88,12 @@ namespace Genesis.Escola.Data.Mappings
 
             builder.Property(a => a.MensagemRetContato)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasColumnType("longtext")
                 .HasColumnName("MensagemRetContato");
 
             builder.Property(a => a.MensagemRetTrabalhe)
                 .IsRequired()
-                .HasColumnType("text")
+                .HasColumnType("longtext")
                 .HasColumnName("MensagemRetTrabalhe");
 
             builder.ToTable("Config");
