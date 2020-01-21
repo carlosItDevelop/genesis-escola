@@ -10,5 +10,7 @@ namespace Genesis.Escola.MVC.Models
     {
         public string NomeCompleto { get; set; }
         public string Usuario { get; set; }
+        public string Permissao { get; set; }
     }
+
 }

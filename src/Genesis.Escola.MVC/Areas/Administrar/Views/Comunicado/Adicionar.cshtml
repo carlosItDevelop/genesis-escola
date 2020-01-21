@@ -217,19 +217,17 @@
                 //Serialize the JSON Array and save in HiddenField.
                 $('#selectedItems').val(JSON.stringify(postedItems));
             }).jstree({
-                "core": {
+                    "core": {
                     "themes": {
                         "variant": "large"
                     },
-               
                     "data": @Html.Raw(ViewBag.Json),
-              
-
+                    },
                 "checkbox": {
                     "keep_selected_style": false
                 },
                 "plugins": ["wholerow", "checkbox"],
-            });
+            })
         });
     </script>
 

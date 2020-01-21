@@ -48,7 +48,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [Area("Administrar")]
         public async Task<IActionResult> Adicionar()
         {
-            ViewBag.Json = JsonConvert.SerializeObject(await BuscarTurmaGeral());
+            ViewBag.Json = JsonConvert.SerializeObject(await BuscarTurma());
             return View();
         }
 
@@ -59,11 +59,13 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         {
             List<TreeViewNode> itemsRetornados = JsonConvert.DeserializeObject<List<TreeViewNode>>(selectedItems);
             var turma = "";
-  
+
             foreach (var item in itemsRetornados)
             {
                 if (item.id.Length > 3) turma += item.id + '|';
             }
+
+            ViewBag.Json = JsonConvert.SerializeObject(await BuscarTurma());
 
             if (file != null && file.Length > 0)
             {
@@ -103,17 +105,35 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [Area("Administrar")]
         public async Task<ActionResult> Editar(Guid id)
         {
-            ViewBag.Turma = await BuscarTurma();
             ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Tarefa/PegarPdf/" + id;
             var model = await _api.BuscarAsync(id);
+            model.selectedItems = model.TurmaId;
+
+            var turmas = await BuscarTurma(model.TurmaId);
+
+            ViewBag.Json = JsonConvert.SerializeObject(turmas);
+
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Area("Administrar")]
-        public async Task<ActionResult> Editar(Guid id, TarefaViewModel model, IFormFile file)
+        public async Task<ActionResult> Editar(Guid id, TarefaViewModel model, IFormFile file, string selectedItems)
         {
+            var turma = "";
+
+            if (selectedItems.Contains("[{\"text"))
+            {
+                List<TreeViewNode> itemsRetornados = JsonConvert.DeserializeObject<List<TreeViewNode>>(selectedItems);
+
+                foreach (var item in itemsRetornados)
+                {
+                    if (item.id.Length > 3) turma += item.id + '|';
+                }
+            }
+            else turma = selectedItems;
+
             ViewBag.Turma = BuscarTurma();
             if (file != null && file.Length > 0)
             {
@@ -133,6 +153,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                         model.ImagemUpload = bytes;
                     }
                 }
+                model.TurmaId = turma;
                 await _api.AlterarAsync(model.Id, model);
                 return RedirectToAction(nameof(Index));
             }
@@ -168,48 +189,19 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         }
         #endregion
 
+        #region Buscar Turma
 
-        public async Task<List<SelectListItem>> BuscarTurma()
+        private async Task<List<JsTreeRoot>> BuscarTurma(string turma = null)
         {
-            var turmaLista = new List<SelectListItem>();
-
-            var turma = await _apiTurma.BuscarAsync();
-
-            turmaLista.Add(new SelectListItem()
-            {
-                Text = "Todos",
-                Value = "TTT"
-            });
-            foreach (var item in turma)
-            {
-                turmaLista.Add(new SelectListItem()
-                {
-                    Text = item.Nome,
-                    Value = item.Serie.Trim() + "-" + item.Turma.Trim() + "-" + item.Turno.Trim()
-                });
-            }
-            //  turmaLista.OrderBy(x => x.Text);
-            return turmaLista.OrderBy(x => x.Text).ToList();
-        }
-
-        public async Task<List<TreeViewNode>> BuscarTurmaGeral(string turma = null)
-        {
-            List<TreeViewNode> nodes = new List<TreeViewNode>();
             var modelCurso = await _apicursoA.BuscarAsync();
             var sorted = from x in modelCurso
                          orderby x.Nome ascending
                          select x;
+            List<JsTreeRoot> nodes = new List<JsTreeRoot>();
 
-            foreach (CursoAcadescViewModel pai in sorted)
-            {
-                nodes.Add(new TreeViewNode { id = pai.Codigo.ToString(), parent = "#", text = pai.Nome });
-            }
+            List<JsTreeModel> child = new List<JsTreeModel>();
 
-            var modelTurma = await _apiTurma.BuscarAsync();
-
-            var sortedT = from x in modelTurma
-                          orderby x.Nome ascending
-                          select x;
+            JsTreeModel[] treeModel = new JsTreeModel[10000];
 
             string[] turmaId = null;
             if (turma != null)
@@ -217,36 +209,68 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                 turmaId = turma.Split("|");
             }
 
-            foreach (TurmaAcadescViewModel filho in sortedT)
-            {
-                var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
-                Boolean selecionado = false;
-                if (turma != null)
-                {
-                    foreach (var item in turmaId)
-                    {
-                        if (item == idNode)
-                        {
-                            selecionado = true;
-                            break;
-                        }
-                    }
-                    if (selecionado)
-                    {
-                        nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome + "Selecionado", selected = true });
-                        selecionado = false;
-                    }
-                    else nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome, selected = false });
 
+            foreach (CursoAcadescViewModel pai in sorted)
+            {
+                var turmas = await _apiTurma.BuscarAsync(pai.Codigo);
+                if (turmas.Count() > 0)
+                {
+                    JsTreeChildren[] filhos = new JsTreeChildren[turmas.Count()];
+                    int i = 0;
+                    foreach (var filho in turmas)
+                    {
+                        var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
+                        Boolean selecionado = false;
+                        if (turma != null)
+                        {
+                            foreach (var item in turmaId)
+                            {
+                                if (item == idNode)
+                                {
+                                    selecionado = true;
+                                    break;
+                                }
+                            }
+                        }
+                        filhos[i] = new JsTreeChildren { text = filho.Nome, id = idNode, state = new JsTreeState { opened = true, selected = selecionado, disabled = false } };
+                        i++;
+                    }
+
+
+                    child.Add(new JsTreeModel
+                    {
+                        text = pai.Nome,
+                        id = pai.Codigo,
+                        parent = "#",
+                        children = filhos
+                    }
+                    );
                 }
                 else
                 {
-                    nodes.Add(new TreeViewNode { id = idNode, parent = filho.Ciclo.ToString(), text = filho.Nome, selected = false });
+                    child.Add(new JsTreeModel
+                    {
+                        text = pai.Nome,
+                        id = pai.Codigo,
+                        parent = "#"
+                    }
+                    );
                 }
             }
+            treeModel = child.ToArray();
+
+            nodes.Add(
+                          new JsTreeRoot
+                          {
+                              text = "Todas as Turmas",
+                              children = treeModel
+                          }
+                );
 
             return nodes;
         }
+
+        #endregion
 
     }
 }

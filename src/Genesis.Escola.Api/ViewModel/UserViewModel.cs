@@ -21,6 +21,11 @@ namespace Genesis.Escola.Api.ViewModel
 
         [Compare("Password", ErrorMessage = "As senhas não conferem.")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Permissão")]
+        public string Permissao { get; set; }
+
+        public string NomeCompleto { get; set; }
     }
 
     public class LoginUserViewModel

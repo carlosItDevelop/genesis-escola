@@ -1,97 +1,127 @@
 ﻿@using static Genesis.Escola.MVC.Functions.Enumeradores.EnumCurso;
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using System.Security.Claims;
+
+
+
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="main-menu-content">
-        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" navigation-header">
-                <span>Menu principal</span><i class=" ft-minus" data-toggle="tooltip" data-placement="right"
-                                              data-original-title="Menu principal"></i>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Home" )"><i class="ft-home"></i><span class="menu-title" data-i18n="">Home</span></a>
-            </li>
-            <li class=" nav-item">
-                <a href="#"><i class="ft-monitor"></i><span class="menu-title" data-i18n="">Páginas</span></a>
-                <ul class="menu-content">
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Sobre")">Sobre</a>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Noticias")">Notícias</a>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Carrossel")">Carrossel</a>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Polo")">Polo</a>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Missao")">Missão e Valores</a>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Filosofia")">Filosofia</a>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="#">Cursos</a>
-                        <ul class="menu-content">
-                            <li>
-                                <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = EducacaoInfantil   })">Educação Infantil</a>
-                            </li>
-                            <li>
-                                <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = FundamentalI  })">Ensino Fundamental I</a>
-                            </li>
-                            <li>
-                                <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = FundamentalII  })">Ensino Fundamental II</a>
-                            </li>
-                            <li>
-                                <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = Tecnico  })">Técnico</a>
-                            </li>
-                            <li>
-                                <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = EnsinoMedio  })">Ensino Médio</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "Galeria")">Galeria de Fotos</a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Turma" )"><i class="ft-activity"></i><span class="menu-title" data-i18n="">Turmas</span></a>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Aluno" )"><i class="ft-cast"></i><span class="menu-title" data-i18n="">Alunos</span></a>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Comunicado" )"><i class="ft-home"></i><span class="menu-title" data-i18n="">Comunicados</span></a>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Tarefa" )"><i class="ft-codepen"></i><span class="menu-title" data-i18n="">Tarefas</span></a>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Cronograma" )"><i class="ft-cpu"></i><span class="menu-title" data-i18n="">Cronogramas</span></a>
-            </li>
+        @{
+            if (User.Identity.IsAuthenticated)
+            {
+                string userid = User.FindFirst("Permissao").Value;
 
-            <li class=" nav-item">
-                <a href="#"><i class="ft-aperture"></i><span class="menu-title" data-i18n="">Configurações</span></a>
-                <ul class="menu-content">
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Basico", "Config")">
-                            <i class="fa fa-connectdevelop"></i>
-                            Dados Básicos
-                        </a>
+                <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                    <li class=" navigation-header">
+                        <span>Menu principal</span><i class=" ft-minus" data-toggle="tooltip" data-placement="right"
+                                                      data-original-title="Menu principal"></i>
                     </li>
-                    <li>
-                        <a class="menu-item" href="@Url.Action("Index", "EmailContato")">
-                            <i class="fa fa-envelope"></i>
-                            E-Mails Contato
-                        </a>
+                    <li class=" nav-item">
+                        <a href="@Url.Action("Index", "Home" )"><i class="ft-home"></i><span class="menu-title" data-i18n="">Home</span></a>
                     </li>
-                </ul>
-            </li>
-            <li class=" nav-item">
-                <a href="@Url.Action("Index", "Usuario" )"><i class="ft-user-check"></i><span class="menu-title" data-i18n="">Usuários</span></a>
-            </li>
+                    @if (userid != "Digitador" && userid != "Comunicador")
+                    {
+                        <li class=" nav-item">
+                            <a href="#"><i class="ft-monitor"></i><span class="menu-title" data-i18n="">Páginas</span></a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Sobre")">Sobre</a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Noticias")">Notícias</a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Carrossel")">Carrossel</a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Polo")">Polo</a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Missao")">Missão e Valores</a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Filosofia")">Filosofia</a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="#">Cursos</a>
+                                    <ul class="menu-content">
+                                        <li>
+                                            <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = EducacaoInfantil })">Educação Infantil</a>
+                                        </li>
+                                        <li>
+                                            <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = FundamentalI })">Ensino Fundamental I</a>
+                                        </li>
+                                        <li>
+                                            <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = FundamentalII })">Ensino Fundamental II</a>
+                                        </li>
+                                        <li>
+                                            <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = Tecnico })">Técnico</a>
+                                        </li>
+                                        <li>
+                                            <a class="menu-item" href="@Url.Action("Index", "Cursos", new { curso = EnsinoMedio })">Ensino Médio</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "Galeria")">Galeria de Fotos</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class=" nav-item">
+                            <a href="@Url.Action("Index", "Turma" )"><i class="ft-activity"></i><span class="menu-title" data-i18n="">Turmas</span></a>
+                        </li>
+                        <li class=" nav-item">
+                            <a href="@Url.Action("Index", "Aluno" )"><i class="ft-cast"></i><span class="menu-title" data-i18n="">Alunos</span></a>
+                        </li>
 
-        </ul>
+                    }
+
+                    <li class=" nav-item">
+                        <a href="@Url.Action("Index", "Comunicado" )"><i class="ft-home"></i><span class="menu-title" data-i18n="">Comunicados</span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a href="@Url.Action("Index", "Tarefa" )"><i class="ft-codepen"></i><span class="menu-title" data-i18n="">Tarefas</span></a>
+                    </li>
+
+
+
+                    @if (userid != "Digitador")
+                    {
+                        <li class=" nav-item">
+                            <a href="@Url.Action("Index", "Cronograma")"><i class="ft-cpu"></i><span class="menu-title" data-i18n="">Cronogramas</span></a>
+                        </li>
+                    }
+
+                    @if (userid != "Digitador" && userid != "Comunicador" && userid != "Supervisor")
+                    {
+                        <li class=" nav-item">
+                            <a href="#"><i class="ft-aperture"></i><span class="menu-title" data-i18n="">Configurações</span></a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Basico", "Config")">
+                                        <i class="fa fa-connectdevelop"></i>
+                                        Dados Básicos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="menu-item" href="@Url.Action("Index", "EmailContato")">
+                                        <i class="fa fa-envelope"></i>
+                                        E-Mails Contato
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class=" nav-item">
+                            <a href="@Url.Action("Index", "Usuario")"><i class="ft-user-check"></i><span class="menu-title" data-i18n="">Usuários</span></a>
+                        </li>
+                    }
+                </ul>
+
+
+            }
+        }
+
+
     </div>
 </div>

@@ -55,14 +55,19 @@ namespace Genesis.Escola.Api.V1.Controllers
             var user = new UsuarioViewModel
             {
                 UserName = registerUser.Name,
+                NomeCompleto = registerUser.NomeCompleto,
                 Email = registerUser.Email,
+                Permissao = registerUser.Permissao,
                 EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, registerUser.Password);
+
             if (result.Succeeded)
             {
+                await _userManager.AddClaimAsync(user, new Claim("Permissao", user.Permissao));
                 await _signInManager.SignInAsync(user, false);
+                
                 return CustomResponse(await GerarJwt(user.UserName));
             }
             foreach (var error in result.Errors)

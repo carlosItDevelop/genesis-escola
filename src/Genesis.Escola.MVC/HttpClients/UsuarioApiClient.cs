@@ -89,5 +89,24 @@ namespace Genesis.Escola.MVC.HttpClients
             resposta.EnsureSuccessStatusCode();
         }
         #endregion
+
+        #region Registrar
+        public async Task RegistrarAsync(RegistarViewModel model)
+        {
+            AddToken();
+            var resposta = await _httpClient.PostAsJsonAsync($"v1/Auth/novo-usuario", model);
+            if (!resposta.IsSuccessStatusCode)
+            {
+                HttpResponseHeaders header = resposta.Headers;
+                var contents = await resposta.Content.ReadAsStringAsync();
+                resposta.StatusCode = System.Net.HttpStatusCode.BadRequest;
+            }
+            else resposta.EnsureSuccessStatusCode();
+            //if (response.IsSuccessStatusCode)
+
+            //    var responseJson = await resposta.Content.ReadAsStringAsync();
+            //Console.WriteLine(responseJson);
+        }
+        #endregion
     }
 }

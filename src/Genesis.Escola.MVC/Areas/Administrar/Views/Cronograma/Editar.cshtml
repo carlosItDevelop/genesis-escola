@@ -33,90 +33,112 @@
         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
     </div>
     <div class="card-content collpase show">
-        <div class="card-body">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="courses-details">
+                    <div class="reply-area">
+                        <form asp-action="Editar" enctype="multipart/form-data">
+                            <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <input asp-for="CaminhoImagem" class="form-control" hidden="hidden" />
+                            <input asp-for="selectedItems" class="form-control" type="text" hidden="hidden" />
+                            <div class="form-group has-success">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label asp-for="DataInicio" class="col-form-label"></label>
+                                            <input asp-for="DataInicio" class="form-control" />
+                                            <span asp-validation-for="DataInicio" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6"></div>
 
-            <form asp-action="Editar" enctype="multipart/form-data">
-                <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
-                <div asp-validation-summary="All" class="text-danger" />
-                <input asp-for="CaminhoImagem" class="form-control" hidden="hidden"  />
-                <div class="form-group has-success">
-
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label asp-for="DataInicio" class="col-form-label"></label>
-                                <input asp-for="DataInicio" class="form-control" />
-                                <span asp-validation-for="DataInicio" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-3">
-                                <label asp-for="DataFinal" class="col-form-label"></label>
-                                <input asp-for="DataFinal" class="form-control" />
-                                <span asp-validation-for="DataFinal" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-4">
-                                <label class="col-form-label">Acesso de</label>
-                                <select asp-for="TurmaId"
-                                        asp-items="@ViewBag.Turma" class="form-control"></select>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label asp-for="DescricaoResumida" class="col-form-label"></label>
-                                <textarea asp-for="DescricaoResumida" class="form-control" rows="5"></textarea>
-                                <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label asp-for="DescricaoCompleta" class="col-form-label"></label>
-                                <textarea asp-for="DescricaoCompleta" class="form-control input-lg textarea-editor" rows="5"></textarea>
-                                <span asp-validation-for="DescricaoCompleta" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-7">
-                                <fieldset class="form-group">
-                                    <br />
-                                    <h4>Arquivo PDF</h4>
-                                    @*<label for="basicInputFile">Arquivo PDF</label>*@
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="application/pdf">
-                                        <label class="custom-file-label" for="File1"></label>
+                                        <div class="col-md-3">
+                                            <label asp-for="DataFinal" class="col-form-label"></label>
+                                            <input asp-for="DataFinal" class="form-control" />
+                                            <span asp-validation-for="DataFinal" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-1"></div>
                                     </div>
-                                </fieldset>
-                            </div>
-                            <div class="col-md-5">
 
+
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label asp-for="DescricaoResumida" class="col-form-label"></label>
+                                            <textarea asp-for="DescricaoResumida" class="form-control" rows="5"></textarea>
+                                            <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label asp-for="DescricaoCompleta" class="col-form-label"></label>
+                                            <textarea asp-for="DescricaoCompleta" class="form-control input-lg textarea-editor" rows="5"></textarea>
+                                            <span asp-validation-for="DescricaoCompleta" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <fieldset class="form-group">
+                                                <br />
+                                                <h4>Arquivo PDF</h4>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="application/pdf">
+                                                    <label class="custom-file-label" for="File1"></label>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div id="my-pdf"></div>
+                                    </div>
+                                    <div id="demoTree">
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <a href="@Url.Action("Index", "Cronograma")" class="btn btn-outline-warning mr-1">
+                                        Retornar <span class="ft-x"></span>
+                                    </a>
+                                    <button class="btn btn-icon btn-outline-primary waves-effect waves-light width-md" type="submit">
+                                        <span>Salvar</span>
+                                        <i class="fa fa-check-square-o"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <a href="@Url.Action("Index", "Cronograma")" class="btn btn-outline-warning mr-1">
-                            Retornar <span class="ft-x"></span>
-                        </a>
-                        <button class="btn btn-icon btn-outline-primary waves-effect waves-light width-md" type="submit">
-                            <span>Salvar</span>
-                            <i class="fa fa-check-square-o"></i>
-                        </button>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
+
+            <div class="col-md-3">
+                <div class="blog-sidebar right">
+                    <div class="single-blog-widget mb-50">
+                        <p>
+                            <label class="col-form-label">Acesso de </label>
+                        </p>
+                        <div id="jstree">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 @section Styles {
     <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Administrar/app-assets/jsTree/themes/default/style.min.css" rel="stylesheet" />
 }
+
 
 @section Scripts
 {
     <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
     <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+    <script src="~/Administrar/app-assets/jsTree/jstree.min.js"></script>
 
     <script>
+
         $(document).ready(function () {
             $("#File").change(function () {
                 var fileName = $(this).val();
@@ -130,6 +152,52 @@
             var FileSize = file.files[0].size / 1024 / 1024; // in MB
             if (FileSize > 2) alert('Tamanho do arquivo maior que 2 MB');
         }
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#jstree').on('changed.jstree', function (e, data) {
+                var i, j;
+                var postedItems = [];
+                for(i = 0, j = data.selected.length; i < j; i++) {
+
+                    //Fetch the Id.
+                    var id = data.selected[i];
+
+                    //Remove the ParentId.
+                    if(id.indexOf('-') != -1){
+                        id = id.split("-")[1];
+                    }
+
+                    //Add the Node to the JSON Array.
+                    postedItems.push({
+                        text: data.instance.get_node(data.selected[i]).text,
+                        id: id,
+                        parent: data.node.parents[0]
+                    });
+                }
+
+                //Serialize the JSON Array and save in HiddenField.
+                $('#selectedItems').val(JSON.stringify(postedItems));
+            }).jstree
+            (
+                {
+                    "core":
+                    {
+                        "themes":
+                        {
+                            "variant": "large"
+                        },
+                        "data":  @Html.Raw(ViewBag.Json),
+                    },
+                    "checkbox": {"keep_selected_style": false},
+                    "plugins": ["wholerow", "checkbox"],
+                }
+            );
+        });
+
     </script>
 
 }

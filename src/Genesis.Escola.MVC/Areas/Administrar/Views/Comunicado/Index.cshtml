@@ -66,8 +66,17 @@
                                 @Html.DisplayFor(modelItem => item.DataFinal)
                             </td>
                             <td>
-                                <a asp-action="Editar" asp-controller="Comunicado" asp-route-id=@item.Id class="btn btn-sm btn-outline-success waves-effect waves-light width-xs"> Editar <i class="ft-edit"></i></a>
-                                <a asp-action="Excluir" asp-controller="Comunicado" asp-route-id=@item.Id class="btn btn-sm btn-outline-danger waves-effect waves-light width-xs"> Excluir <i class="ft-trash-2"></i></a>
+                                @{
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                        string userid = User.FindFirst("Permissao").Value;
+                                        if (userid != "Digitador")
+                                        {
+                                            <a asp-action="Editar" asp-controller="Comunicado" asp-route-id=@item.Id class="btn btn-sm btn-outline-success waves-effect waves-light width-xs"> Editar <i class="ft-edit"></i></a>
+                                            <a asp-action="Excluir" asp-controller="Comunicado" asp-route-id=@item.Id class="btn btn-sm btn-outline-danger waves-effect waves-light width-xs"> Excluir <i class="ft-trash-2"></i></a>
+                                        }
+                                    }
+                                }
                             </td>
                         </tr>
                     }

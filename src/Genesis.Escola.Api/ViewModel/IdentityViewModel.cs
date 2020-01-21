@@ -6,6 +6,7 @@ namespace Genesis.Escola.Api.ViewModel
     {
         public string NomeCompleto { get; set; }
         public string Usuario { get; set; }
+        public string Permissao { get; set; }
     }
 
     public class IdentityRoleViewModel : IdentityRole

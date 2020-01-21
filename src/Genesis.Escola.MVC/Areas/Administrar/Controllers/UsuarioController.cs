@@ -1,12 +1,12 @@
 ﻿using Genesis.Escola.MVC.Areas.Administrar.Models;
 using Genesis.Escola.MVC.Functions;
 using Genesis.Escola.MVC.HttpClients;
+//using Genesis.Escola.MVC.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -31,7 +31,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         }
         #endregion
 
-
+        #region Index
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> Index()
@@ -39,6 +39,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
             var model = await _api.BuscarAsync();
             return View(model);
         }
+        #endregion
 
 
         #region Editar
@@ -63,6 +64,40 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         //    return View(model);
         //}
         #endregion
+
+        #region Registrar
+        [Area("Administrar")]
+        public ActionResult Registrar()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            items.Add(new SelectListItem { Text = "Administrador", Value = "Administrador" });
+
+            items.Add(new SelectListItem { Text = "Supervisor", Value = "Supervisor" });
+
+            items.Add(new SelectListItem { Text = "Comunicador", Value = "Comunicador", Selected = true });
+
+            items.Add(new SelectListItem { Text = "Digitador", Value = "Digitador" });
+
+            ViewBag.Permissao = items;
+
+            return View();
+        }
+        #endregion
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Area("Administrar")]
+        public async Task<ActionResult> Registrar(RegistarViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Email = "email@email.com.br";
+                await _api.RegistrarAsync(model);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
 
 
         #region Login

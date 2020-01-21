@@ -35,6 +35,8 @@ namespace Genesis.Escola.MVC.Models
         [Display(Name = "Arquivo PDF")]
         public string CaminhoImagem { get; set; }
 
+        public string selectedItems { get; set; }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

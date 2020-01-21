@@ -3,14 +3,16 @@ using System;
 using Genesis.Escola.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Genesis.Escola.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200120201115_CriadoPermissaoNaTabelaUsusario")]
+    partial class CriadoPermissaoNaTabelaUsusario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,8 +72,6 @@ namespace Genesis.Escola.Api.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
-
-                    b.Property<string>("Permissao");
 
                     b.Property<string>("PhoneNumber");
 

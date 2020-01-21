@@ -11,5 +11,6 @@ namespace Genesis.Escola.Business.Models
         public string DescricaoCompleta { get; set; }
         public string TurmaId { get; set; }
         public string CaminhoImagem { get; set; }
+  
     }
 }
