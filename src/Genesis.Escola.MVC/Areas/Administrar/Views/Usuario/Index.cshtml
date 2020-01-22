@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Genesis.Escola.MVC.Models.UsuarioViewModel>
+﻿@model IEnumerable<Genesis.Escola.MVC.Areas.Administrar.Models.UsuarioViewModel>
 @{
     ViewData["Title"] = "Index";
 }
@@ -45,10 +45,10 @@
                         <th style='width: 25%;'>
                             @Html.DisplayNameFor(model => model.UserName)
                         </th>
-                        <th style='width: 45%;'>
+                        <th style='width: 40%;'>
                             @Html.DisplayNameFor(model => model.NomeCompleto)
                         </th>
-                        <th style='width: 25%;'></th>
+                        <th style='width: 32%;'></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,7 +64,8 @@
 
                             <td>
                                 <a asp-action="Editar" asp-controller="Usuario" asp-route-id=@item.Id class="btn btn-sm btn-outline-success waves-effect waves-light width-xs"> Editar <i class="ft-edit"></i></a>
-                                <a asp-action="Excluir" asp-controller="Galeria" asp-route-id=@item.Id class="btn btn-sm btn-outline-danger waves-effect waves-light width-xs"> Excluir <i class="ft-trash-2"></i></a>
+                                <a asp-action="MudarSenha" asp-controller="Usuario" asp-route-id=@item.Id class="btn btn-sm btn-outline-cyan waves-effect waves-light width-xs">Alterar Senha <i class="ft-lock"></i></a>
+                                <a asp-action="Excluir" asp-controller="Usuario" asp-route-id=@item.Id class="btn btn-sm btn-outline-danger waves-effect waves-light width-xs"> Excluir <i class="ft-trash-2"></i></a>
                             </td>
                         </tr>
                     }
@@ -76,3 +77,22 @@
     </div>
 </div>
 
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/colReorder.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Administrar/app-assets/vendors/css/tables/extensions/fixedHeader.dataTables.min.css">
+}
+@section Scripts
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/Administrar/app-assets/vendors/js/tables/datatable/dataTables.fixedHeader.min.js" type="text/javascript"></script>
+
+    <script src="~/Administrar/app-assets/js/scripts/tables/IniciarTables.js" type="text/javascript"></script>
+
+}

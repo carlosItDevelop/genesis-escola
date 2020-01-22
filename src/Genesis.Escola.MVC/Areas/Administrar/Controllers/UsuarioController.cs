@@ -41,49 +41,109 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         }
         #endregion
 
-
         #region Editar
 
         [Area("Administrar")]
         public async Task<ActionResult> Editar(Guid id)
         {
+            ViewBag.Permissao = RetornaDepto();
             var model = await _api.BuscarAsync(id.ToString());
             return View(model);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Area("Administrar")]
-        //public async Task<ActionResult> Editar(Guid id, UsuarioViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _api.AlterarAsync(model.Id, model);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(model);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Area("Administrar")]
+        public async Task<ActionResult> Editar(Guid id, UsuarioViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Email = "email@email.com.br";
+                await _api.AlterarAsync(model.Id, model);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+        #endregion
+
+        #region Mudar a Senha
+        [Area("Administrar")]
+        public async Task<ActionResult> MudarSenha(Guid id)
+        {
+            ViewBag.Permissao = RetornaDepto();
+            var model = await _api.BuscarAsync(id.ToString());
+            var resetmodel = new ResetPasswordViewModel();
+            if (model != null)
+            {
+                resetmodel.Id = model.Id;
+                resetmodel.UserName = model.UserName;
+            }
+            else
+            {
+                ModelState.AddModelError("", "Usuário não encontrado");
+            }
+            return View(resetmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Area("Administrar")]
+        public async Task<ActionResult> MudarSenha(ResetPasswordViewModel model)
+        {
+            var user = await _api.BuscarAsync(model.Id);
+            if (model != null)
+            {
+                await _api.AlterarSenhaAsync(user.Id, model);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Usuário não encontrado");
+            }
+
+            return View(model);
+        }
+        #endregion
+
+        #region Excluir Usuario
+        [Area("Administrar")]
+        public async Task<ActionResult> Excluir(Guid id)
+        {
+            ViewBag.Permissao = RetornaDepto();
+            var model = await _api.BuscarAsync(id.ToString());
+            if (model == null)
+            {
+                ModelState.AddModelError("", "Usuário não encontrado");
+            }
+            return View(model);
+        }
+
+
+        [Area("Administrar")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Excluir(Guid id, UsuarioViewModel dados)
+        {
+            ViewBag.Permissao = RetornaDepto();
+            var model = await _api.BuscarAsync(id.ToString());
+            if (model != null)
+            {
+                await _api.ExcluirAsync(id);
+                return RedirectToAction("Index", "Home");
+            }
+            ModelState.AddModelError("", "Registro não encontrado para Exluir!!! (Pode ter sido excluido por outra pessoa)");
+            return View();
+        }
+
         #endregion
 
         #region Registrar
         [Area("Administrar")]
         public ActionResult Registrar()
         {
-            List<SelectListItem> items = new List<SelectListItem>();
-
-            items.Add(new SelectListItem { Text = "Administrador", Value = "Administrador" });
-
-            items.Add(new SelectListItem { Text = "Supervisor", Value = "Supervisor" });
-
-            items.Add(new SelectListItem { Text = "Comunicador", Value = "Comunicador", Selected = true });
-
-            items.Add(new SelectListItem { Text = "Digitador", Value = "Digitador" });
-
-            ViewBag.Permissao = items;
-
+            ViewBag.Permissao = RetornaDepto();
             return View();
         }
-        #endregion
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -98,7 +158,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
             }
             return View(model);
         }
-
+        #endregion
 
         #region Login
         [HttpGet]
@@ -163,6 +223,18 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         scheme: "EscolaSecurityScheme");
             //  await HttpContext.SignOutAsync();
             return RedirectToAction(nameof(Login));
+        }
+        #endregion
+
+        #region Retorna os Departamentos
+        public List<SelectListItem> RetornaDepto()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Administrador", Value = "Administrador" });
+            items.Add(new SelectListItem { Text = "Supervisor", Value = "Supervisor" });
+            items.Add(new SelectListItem { Text = "Comunicador", Value = "Comunicador", Selected = true });
+            items.Add(new SelectListItem { Text = "Digitador", Value = "Digitador" });
+            return items;
         }
         #endregion
     }

@@ -208,6 +208,36 @@ namespace Genesis.Escola.Api.V1.Controllers
             return Ok(result);
 
         }
+
+        [HttpPut("AlterarSenha/{id:guid}")]
+        public async Task<ActionResult<UsuarioViewModel>> AlterarSenha(string id, ResetPasswordViewModel userViewModel)
+        {
+            if (id != userViewModel.Id)
+            {
+                NotificarErro("O id informado não é o mesmo que foi passado na query");
+                return CustomResponse(userViewModel);
+            }
+
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            var user = await _userManager.FindByIdAsync(userViewModel.Id);
+
+            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, userViewModel.Password);
+            return Ok(result);
+
+        }
+
+        #endregion
+
+        #region Delete
+        [HttpDelete("{id:guid}")]
+        [Authorize]
+        public async Task<ActionResult<UsuarioViewModel>> Excluir(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var result = await _userManager.DeleteAsync(user);
+            return CustomResponse(user);
+        }
         #endregion
 
         private static long ToUnixEpochDate(DateTime date)

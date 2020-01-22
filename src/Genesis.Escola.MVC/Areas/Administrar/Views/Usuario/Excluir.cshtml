@@ -1,8 +1,7 @@
 ﻿@model Genesis.Escola.MVC.Areas.Administrar.Models.UsuarioViewModel
 @{
-    ViewData["Title"] = "Editar Usuário";
+    ViewData["Title"] = "Excluir Usuário";
 }
-
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -19,7 +18,7 @@
                         <a href="@Url.Action("Index", "Usuario" )">Listagem de Usuários</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        Editar Usuário
+                        Excluir Usuário
                     </li>
                 </ol>
             </div>
@@ -29,16 +28,15 @@
 
 <div class="card">
     <div class="card-header btn-primary ">
-        <h4 class="card-title" id="horz-layout-basic">Editar Usuário</h4>
+        <h4 class="card-title" id="horz-layout-basic">Excluir um Usuário</h4>
         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
     </div>
     <div class="card-content collpase show">
         <div class="card-body">
 
-            <form asp-action="Editar">
-                <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
+            <form asp-action="Excluir" id="ExcluirDados">
+                @Html.HiddenFor(model => model.Id, new { @class = "CodigoExcluir" })
                 <div asp-validation-summary="All" class="text-danger" />
-
 
                 <div class="form-group has-success">
                     <div class="col-sm-12">
@@ -48,50 +46,68 @@
                                 <input asp-for="UserName" class="form-control" readonly />
                                 <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
-                            @*<div class="col-md-3">
-                                <br />
-                                <br />
-                                <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Alterar a Senha</span> <i class="ft-zap"></i> </button>
-                            </div>*@
                         </div>
                         <br />
                         <div class="row">
                             <div class="col-md-8">
                                 <label asp-for="NomeCompleto" class="col-form-label">Nome Completo:</label>
-                                <input asp-for="NomeCompleto" class="form-control" />
+                                <input asp-for="NomeCompleto" class="form-control" readonly />
                                 <span asp-validation-for="NomeCompleto" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
                                 <label asp-for="Permissao" class="col-form-label"></label>
-                                <select asp-for="Permissao" asp-items="@ViewBag.Permissao" class="form-control"></select>
+                                <select asp-for="Permissao" asp-items="@ViewBag.Permissao" class="form-control" disabled></select>
                             </div>
                         </div>
                         <br />
-                        @*<div class="row">
-                            <div class="col-md-12">
-                                <label asp-for="Email" class="col-form-label">E-Mail:</label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                        </div>*@
-                        <br />
-
                     </div>
                     <div class="form-actions">
+
                         <a href="@Url.Action("Index", "Usuario")" class="btn btn-outline-warning mr-1">
                             Retornar <span class="ft-x"></span>
                         </a>
-                        <button class="btn btn-icon btn-outline-primary waves-effect waves-light width-md" type="submit">
-                            <span>Salvar</span>
-                            <i class="fa fa-check-square-o"></i>
-                        </button>
+                        <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Excluir</span> <i class="ft-trash-2"></i> </button>
                     </div>
                 </div>
-
-
-
             </form>
         </div>
     </div>
 </div>
+
+<partial name="_Excluir" />
+
+
+
+@section Styles {
+    <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
+    <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".textarea-editor").summernote("disable");
+
+            $('.btn-sim').click(function () {
+                var codigo = $(".CodigoExcluir").val();
+                var novaUrl = doByGet('@Url.Action("Excluir","Usuario")');
+                var model = $("#ExcluirDados").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: novaUrl,
+                    data: model,
+                    success: function (dados) {
+                        window.location.href = '@Url.Action("Index","Usuario")';
+                    }
+                });
+            });
+        });
+
+        function doByGet(url) {
+            $.get(url);
+        };
+    </script>
+}
 

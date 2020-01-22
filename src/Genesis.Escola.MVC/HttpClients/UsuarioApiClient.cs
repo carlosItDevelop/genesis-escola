@@ -85,7 +85,25 @@ namespace Genesis.Escola.MVC.HttpClients
         public async Task AlterarAsync(string Id, UsuarioViewModel model)
         {
             AddToken();
-            var resposta = await _httpClient.PutAsJsonAsync($"v1/Auth/Alterar/{Id}", model);
+            var resposta = await _httpClient.PutAsJsonAsync($"v1/Auth/Atualizar/{Id}", model);
+            resposta.EnsureSuccessStatusCode();
+        }
+        #endregion
+
+        #region Alterar Senha
+        public async Task AlterarSenhaAsync(string Id, ResetPasswordViewModel model)
+        {
+            AddToken();
+            var resposta = await _httpClient.PutAsJsonAsync($"v1/Auth/AlterarSenha/{Id}", model);
+            resposta.EnsureSuccessStatusCode();
+        }
+        #endregion
+
+        #region Excluir
+        public async Task ExcluirAsync(Guid id)
+        {
+            AddToken();
+            var resposta = await _httpClient.DeleteAsync($"v1/Auth/{id}");
             resposta.EnsureSuccessStatusCode();
         }
         #endregion

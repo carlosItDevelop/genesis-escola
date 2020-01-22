@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Genesis.Escola.MVC.Models
+namespace Genesis.Escola.MVC.Areas.Administrar.Models
 {
     public class UsuarioViewModel : IdentityUser
     {
