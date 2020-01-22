@@ -38,7 +38,7 @@
             <form asp-action="AdicionarCarrossel" enctype="multipart/form-data">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
-                <input asp-for="CaminhoImagem" class="form-control" type="text" hidden="hidden" />
+                <input asp-for="CaminhoImagem" class="form-control" type="text" hidden="hidden" enctype="multipart/form-data"/>
 
                 <div class="form-group has-success">
                     <div class="row">

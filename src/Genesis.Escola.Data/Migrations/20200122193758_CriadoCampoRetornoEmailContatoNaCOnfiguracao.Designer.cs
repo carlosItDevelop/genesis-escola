@@ -3,14 +3,16 @@ using System;
 using Genesis.Escola.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Genesis.Escola.Data.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20200122193758_CriadoCampoRetornoEmailContatoNaCOnfiguracao")]
+    partial class CriadoCampoRetornoEmailContatoNaCOnfiguracao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,18 +258,6 @@ namespace Genesis.Escola.Data.Migrations
                         .HasColumnName("Endereco")
                         .HasColumnType("varchar(300)")
                         .HasMaxLength(300);
-
-                    b.Property<string>("ImagemYoutube")
-                        .IsRequired()
-                        .HasColumnName("ImagemYoutube")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("LinkYoutube")
-                        .IsRequired()
-                        .HasColumnName("LinkYoutube")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
 
                     b.Property<string>("MensagemRetContato")
                         .IsRequired()

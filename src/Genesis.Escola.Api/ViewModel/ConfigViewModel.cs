@@ -24,5 +24,9 @@ namespace Genesis.Escola.Api.ViewModel
         public bool EmailSsl { get; set; }
         public string MensagemRetContato { get; set; }
         public string MensagemRetTrabalhe { get; set; }
+        public string EmailRetContato { get; set; }
+        public string LinkYoutube { get; set; }
+        public string ImagemYoutube { get; set; }
+        public byte[] ImagemUpload { get; set; }
     }
 }

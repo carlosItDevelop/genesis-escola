@@ -50,6 +50,11 @@ namespace Genesis.Escola.MVC.Models
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [Display(Name = "E-Mail")]
         [DataType(DataType.EmailAddress, ErrorMessage = "E-mail em formato inválido.")]
+        public string EmailRetContato { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [Display(Name = "E-Mail")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail em formato inválido.")]
         public string EmailEnvio { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
@@ -80,6 +85,15 @@ namespace Genesis.Escola.MVC.Models
         [StringLength(100, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 10)]
         public string MensagemRetTrabalhe { get; set; }
 
-        public string EmailContato { get; set; }
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [Display(Name = "Link do Vídeo no Youtube")]
+        public string LinkYoutube { get; set; }
+
+
+       // [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [Display(Name = "Imagem para Youtube")]
+        public string ImagemYoutube { get; set; }
+        public byte[] ImagemUpload { get; set; }
+
     }
 }

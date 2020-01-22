@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Genesis.Escola.Api.Controllers;
+using Genesis.Escola.Api.Funcoes;
 using Genesis.Escola.Api.ViewModel;
 using Genesis.Escola.Business.Interfaces;
 using Genesis.Escola.Business.Interfaces.Services;
 using Genesis.Escola.Business.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,17 +27,21 @@ namespace Genesis.Escola.Api.V1.Controllers
         private readonly IConfigRepositorio _configRepositorio;
         private readonly IMapper _mapper;
         private readonly IConfigService _configService;
+        private readonly IHostingEnvironment _env;
         #endregion
 
         #region Construtor
         public ConfigController(IConfigRepositorio configRepositorio,
                                IMapper mapper,
-                               IConfigService configService, INotificador notificador,
+                               IConfigService configService, 
+                               INotificador notificador,
+                               IHostingEnvironment env,
                                IUser user) : base(notificador, user)
         {
             _configRepositorio = configRepositorio;
             _mapper = mapper;
             _configService = configService;
+            _env = env;
         }
         #endregion
 
@@ -62,6 +69,17 @@ namespace Genesis.Escola.Api.V1.Controllers
         public async Task<ActionResult<ConfigViewModel>> Adicionar(ConfigViewModel configViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
+            var caminho = @"\imagens\";
+            var caminhoAmbiente = _env.WebRootPath;
+
+            var gravaImagem = Imagens.UploadArquivo(configViewModel.ImagemUpload, "video", caminho, caminhoAmbiente, false);
+            if (gravaImagem.Key == 1)
+            {
+                return CustomResponse(gravaImagem.Value);
+            }
+
+            configViewModel.ImagemYoutube = gravaImagem.Value;
+
             var result = await _configService.Adicionar(_mapper.Map<Config>(configViewModel));
             return CustomResponse(configViewModel);
         }
@@ -76,6 +94,24 @@ namespace Genesis.Escola.Api.V1.Controllers
                 NotificarErro("O id informado não é o mesmo que foi passado na query");
                 return CustomResponse(configViewModel);
             }
+
+            if (configViewModel.ImagemUpload != null)
+            {
+                // excluir a imagem anterior 
+                if (!string.IsNullOrEmpty(configViewModel.ImagemYoutube)) System.IO.File.Delete(_env.WebRootPath + configViewModel.ImagemYoutube);
+
+                var caminho = @"\imagens\";
+                var caminhoAmbiente = _env.WebRootPath;
+                var gravaImagem = Imagens.UploadArquivo(configViewModel.ImagemUpload, "video", caminho,
+                    caminhoAmbiente, false);
+                if (gravaImagem.Key == 1)
+                {
+                    return CustomResponse(gravaImagem.Value);
+                }
+                //adicionar a nova imagem
+                configViewModel.ImagemYoutube = gravaImagem.Value;
+            }
+
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
             await _configService.Atualizar(_mapper.Map<Config>(configViewModel));
@@ -93,5 +129,20 @@ namespace Genesis.Escola.Api.V1.Controllers
             return CustomResponse(configViewModel);
         }
         #endregion
+
+        #region Pegar Imagem do Servidor
+        [HttpGet]
+        [Route("PegarImagem/{id:Guid}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ImageGetAsync(Guid Id)
+        {
+            var galeria = _mapper.Map<ConfigViewModel>(await _configRepositorio.ObterPorId(Id));
+            var webRoot = _env.WebRootPath + galeria.ImagemYoutube;
+            var ext = Path.GetExtension(webRoot);
+            var contents = System.IO.File.ReadAllBytes(webRoot);
+            return File(contents, "image/" + ext);
+        }
+        #endregion
+
     }
 }

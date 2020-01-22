@@ -104,7 +104,6 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                 }
             }
 
-
             if (ModelState.IsValid)
             {
                 await _api.AlterarAsync(model.Id, model);

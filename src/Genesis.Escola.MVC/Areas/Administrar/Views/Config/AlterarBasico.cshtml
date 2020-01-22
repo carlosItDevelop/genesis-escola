@@ -33,9 +33,10 @@
     </div>
     <div class="card-content collpase show">
         <div class="card-body">
-            <form asp-action="AlterarBasico" class="steps-validation wizard-circle" data-ajax="true" data-ajax-method="POST">
+            <form asp-action="AlterarBasico" class="steps-validation wizard-circle" data-ajax="true" data-ajax-method="POST" enctype="multipart/form-data">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
+                <input asp-for="ImagemYoutube" class="form-control" type="text" hidden="hidden" />
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" id="baseIcon-tab1" data-toggle="tab" aria-controls="tabIcon1"
@@ -52,6 +53,10 @@
                     <li class="nav-item">
                         <a class="nav-link" id="baseIcon-tab4" data-toggle="tab" aria-controls="tabIcon4"
                            href="#tabIcon4" aria-expanded="false"><i class="fa fa-envelope-open"></i> Configurar E-Mail</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="baseIcon-tab5" data-toggle="tab" aria-controls="tabIcon5"
+                           href="#tabIcon5" aria-expanded="false"><i class="fa fa-youtube"></i> Youtube - Página Principal</a>
                     </li>
                 </ul>
                 <div class="tab-content px-1 pt-1">
@@ -87,6 +92,18 @@
                                         <textarea asp-for="MensagemRetContato" class="form-control input-lg" rows="4"></textarea>
                                         <span asp-validation-for="MensagemRetContato" class="text-danger"></span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+                            <strong>O E-mail abaixo é da pessoa que vai responder aos contatos</strong>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label asp-for="EmailRetContato" class="col-md-2 col-form-label">E-Mail:  <span class="danger">*</span></label>
+                                <div class="col-md-9">
+                                    <input asp-for="EmailRetContato" class="form-control input-lg " />
+                                    <span asp-validation-for="EmailRetContato" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -217,13 +234,50 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label asp-for="EmailSsl" >SSL:</label>
+                                    <label asp-for="EmailSsl">SSL:</label>
                                     <div class="col-md-4">
                                         <input asp-for="EmailSsl" class="" />
                                         <span asp-validation-for="EmailSsl" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tabIcon5" aria-labelledby="baseIcon-tab5">
+                        <br />
+                        <h4 class="form-section">Página de Principal - Youtube</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="LinkYoutube" class="col-md-2 col-form-label">Link do Youtube:  <span class="danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input asp-for="LinkYoutube" class="form-control input-lg" />
+                                        <span asp-validation-for="LinkYoutube" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+                                    <strong>Tamanho imagem 544 x 383 </strong>
+                                </div>
+                                <fieldset class="form-group">
+                                    <label for="basicInputFile">Imagem</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="image/*">
+                                        <label class="custom-file-label" for="File1"></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div id="showimage" class="col-6">
+                                <img src="@($"{ViewData["CaminhoImagem"]}")" width="350" height="200" alt="Imagem Padrão" />
+                            </div>
+                            @*<div id="showimage" class="col-6">
+                        <img src="~/imagens/semImagem.png" width="350" height="200" class="center" />
+                    </div>*@
                         </div>
                     </div>
                 </div>
@@ -241,6 +295,11 @@
 </div>
 
 @section Styles {
+    <style>
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Selecionar";
+        }
+    </style>
     <link href="~/Administrar/app-assets/Summernote/summernote.css" rel="stylesheet" />
 }
 @section Scripts
@@ -248,4 +307,33 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/Administrar/app-assets/Summernote/summernote.min.js"></script>
     <script src="~/Administrar/app-assets/Summernote/form-summernote.init.js"></script>
+    <script>
+         $(document).ready(function() {
+             $('#EmailSenha').val('@Model.EmailSenha');
+
+             $("#File").change(function () {
+                var previewimages = $("#showimage");
+                previewimages.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", "height:200px;width: 350px;");
+                        img.attr("src", e.target.result);
+                        previewimages.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            });
+         });
+
+        function ValidateSize(file) {
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize > 2) {
+                alert('Tamanho do arquivo maior que 2 MB');
+
+            }
+        }
+    </script>
 }

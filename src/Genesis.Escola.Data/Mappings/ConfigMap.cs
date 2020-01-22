@@ -14,7 +14,7 @@ namespace Genesis.Escola.Data.Mappings
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Id)
                 .HasColumnName("Id");
-              //  .HasColumnType("UniqueIdentifier");
+            //  .HasColumnType("UniqueIdentifier");
 
             builder.Property(a => a.TituloContato)
                    .HasMaxLength(50)
@@ -58,6 +58,12 @@ namespace Genesis.Escola.Data.Mappings
                    .HasColumnType("varchar(100)")
                    .HasColumnName("EmailRetTrabalhe");
 
+            builder.Property(a => a.EmailRetContato)
+                   .HasMaxLength(100)
+                   .IsRequired()
+                   .HasColumnType("varchar(100)")
+                   .HasColumnName("EmailRetContato");
+
             builder.Property(a => a.EmailEnvio)
                    .HasMaxLength(100)
                    .IsRequired()
@@ -95,6 +101,18 @@ namespace Genesis.Escola.Data.Mappings
                 .IsRequired()
                 .HasColumnType("longtext")
                 .HasColumnName("MensagemRetTrabalhe");
+
+            builder.Property(a => a.LinkYoutube)
+                   .HasMaxLength(100)
+                   .IsRequired()
+                   .HasColumnType("varchar(100)")
+                   .HasColumnName("LinkYoutube");
+
+            builder.Property(a => a.ImagemYoutube)
+                   .HasMaxLength(100)
+                   .IsRequired()
+                   .HasColumnType("varchar(100)")
+                   .HasColumnName("ImagemYoutube");
 
             builder.ToTable("Config");
         }

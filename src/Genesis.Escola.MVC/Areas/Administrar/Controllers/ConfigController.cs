@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Genesis.Escola.MVC.HttpClients;
 using Genesis.Escola.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
 {
@@ -17,12 +19,14 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
     {
         #region Variaveis
         private readonly ConfigApiClient _api;
+        private IConfiguration _configuration;
         #endregion
 
         #region Construtor
-        public ConfigController(ConfigApiClient api)
+        public ConfigController(ConfigApiClient api, IConfiguration configuration)
         {
             _api = api;
+            _configuration = configuration;
         }
         #endregion
 
@@ -37,7 +41,11 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                 model = new ConfigViewModel();
                 return View("IncluirBasico", model);
             }
-            else return View("AlterarBasico", model);
+            else
+            {
+                ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Config/PegarImagem/" + model.Id;
+                return View("AlterarBasico", model);
+            }
         }
         #endregion
 
@@ -45,8 +53,24 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Area("Administrar")]
-        public async Task<ActionResult> IncluirBasico(ConfigViewModel model)
+        public async Task<ActionResult> IncluirBasico(ConfigViewModel model, IFormFile file)
         {
+            if (file == null && file.Length == 0)
+            {
+                ModelState.AddModelError("", "A Imagem é obrigatória");
+            }
+            else if (file.Length > 2009393)
+            {
+                ModelState.AddModelError("", "A Imagem é maior que 2 Mb");
+            }
+            using (MemoryStream mStream = new MemoryStream())
+            {
+                await file.CopyToAsync(mStream);
+                byte[] bytes = mStream.ToArray();
+                model.ImagemUpload = bytes;
+            }
+
+
             if (ModelState.IsValid)
             {
                 var resultado = await _api.IncluirAsync(model);
@@ -55,9 +79,9 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                 {
                     foreach (var item in resultado.errors)
                     {
-                       ModelState.AddModelError("", item.ToString());
+                        ModelState.AddModelError("", item.ToString());
                     }
-                    
+
                 }
             }
             return View(model);
@@ -68,8 +92,30 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Area("Administrar")]
-        public async Task<ActionResult> AlterarBasico(ConfigViewModel model)
+        public async Task<ActionResult> AlterarBasico(ConfigViewModel model, IFormFile file)
         {
+
+            if (file != null && file.Length > 0)
+            {
+                if (file.Length > 2009393)
+                {
+                    ModelState.AddModelError("", "A Imagem é maior que 2 Mb");
+                }
+                using (MemoryStream mStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(mStream);
+                    byte[] bytes = mStream.ToArray();
+                    model.ImagemUpload = bytes;
+                }
+            }
+            if (string.IsNullOrEmpty(model.ImagemYoutube))
+            {
+                if (file == null)
+                {
+                    ModelState.AddModelError("", "A Imagem do Youtube é obrigatória");
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var resultado = await _api.AlterarAsync(model.Id, model);
@@ -83,6 +129,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
 
                 }
             }
+            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Config/PegarImagem/" + model.Id;
             return View(model);
         }
         #endregion
