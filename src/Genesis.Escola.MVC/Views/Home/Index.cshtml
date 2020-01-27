@@ -1,17 +1,17 @@
 ﻿@using Genesis.Escola.MVC.Models
 @model dynamic
 
-@section Style
+@section Styles
 {
     <style>
         .notice-video {
-            background: rgba(0, 0, 0, 0) url("../../imagens/video.png") repeat scroll 0 0;
-            /*background-size: cover;
+            background: rgba(0, 0, 0, 0) url(@($"{ViewData["CaminhoImagemYoutube"]}")) repeat scroll 0 0;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
             position: relative;
             height: 382px;
-            width: 100%;*/
+            width: 100%;
         }
     </style>
 }
@@ -50,7 +50,7 @@
                     <h3>CONHECENDO A ESCOLA</h3>
                     <div class="notice-video">
                         <div class="video-icon video-hover">
-                            <a class="video-popup" href="https://www.youtube.com/watch?v=i0ljVu7Jf1M">
+                            <a class="video-popup" href="@Model.Config.LinkYoutube">
                                 <i class="zmdi zmdi-play"></i>
                             </a>
                         </div>

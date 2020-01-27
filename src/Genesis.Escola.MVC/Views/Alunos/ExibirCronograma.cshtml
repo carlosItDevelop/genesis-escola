@@ -37,11 +37,10 @@
             <br />
             <div id="my-pdf">
                 <a href="@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())" data-fancybox="images" data-caption="&lt;b&gt;@Model.DescricaoResumida&lt;/b&gt;&lt;br /&gt;@Model.DescricaoResumida ">
-                    <img src="@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())" />
                 </a>
             </div>
             <br />
-            <a class="default-btn" href="@Url.Action("Cronogramas", "Alunos")">Voltar aos Cronogramas</a>
+            <a class="default-btn" href="@Url.Action("Cronograma", "Alunos")">Voltar aos Cronogramas</a>
         </div>
     </div>
 </div>
@@ -68,7 +67,8 @@
                 forcePDFJS: true,
                 fallbackLink: '<p>Este navegador não suporta PDFs embutidos. Faça o download do PDF para visualizá-lo: <a href="http://get.adobe.com/reader">Download PDF</a></p>'
             };
-            PDFObject.embed("@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())", "#my-pdf", options);
+            var caminho = '@Model.CaminhoImagem';
+            if (caminho !== '') PDFObject.embed("@Url.Content(ViewData["CaminhoImagem"] + @Model.Id.ToString())", "#my-pdf", options);
         });
 
     </script>

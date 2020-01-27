@@ -18,6 +18,7 @@ namespace Genesis.Escola.Api.ViewModel
         public string Turma { get; set; }
         public string Serie { get; set; }
         public string Turno { get; set; }
+        public string Curso { get; set; }
         public string Numero { get; set; }
         public bool Ativo { get; set; }
     }

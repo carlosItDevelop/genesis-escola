@@ -158,7 +158,7 @@ namespace Genesis.Escola.MVC.Controllers
 
         #endregion
 
-        #region Trabalhe Conosoco
+        #region Recebido
         public ActionResult Recebido()
         {
             return View();

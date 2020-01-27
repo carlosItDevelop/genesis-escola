@@ -23,26 +23,26 @@ namespace Genesis.Escola.Data.Repository
 
         public async Task<IEnumerable<Tarefa>> PegarPorDataFinal(DateTime fim)
         {
-            IEnumerable<Tarefa> Tarefa = await Db.Tarefas.Where(n => n.DataFinal >= DateTime.Now && n.DataFinal.Value <= fim)
+            IEnumerable<Tarefa> Tarefa = await Db.Tarefas.Where(n => n.DataFinal >= DateTime.Today && n.DataFinal.Value <= fim)
                                              .Select(n => n).ToListAsync();
-            return Tarefa.Where(p => p.DataInicio.Value <= DateTime.Now);
+            return Tarefa.Where(p => p.DataInicio.Value <= DateTime.Today);
         }
 
         public async Task<IEnumerable<Tarefa>> PegarAtivas()
         {
-            return await Db.Tarefas.Where(n => n.DataInicio <= DateTime.Now && n.DataFinal.Value >= DateTime.Now)
+            return await Db.Tarefas.Where(n => n.DataInicio <= DateTime.Today && n.DataFinal.Value >= DateTime.Today)
                                              .Select(n => n).ToListAsync();
         }
 
         public async Task<IEnumerable<Tarefa>> PegarAtivas(string turma)
         {
-            return await Db.Tarefas.Where(n => n.DataInicio <= DateTime.Now && n.DataFinal.Value >= DateTime.Now && n.TurmaId == turma)
+            return await Db.Tarefas.Where(n => n.DataInicio <= DateTime.Today && n.DataFinal.Value >= DateTime.Today && n.TurmaId.Contains(turma))
                                              .Select(n => n).ToListAsync();
         }
 
         public async Task<IEnumerable<Tarefa>> PegarUltimosDias(int dias)
         {
-            return await PegarPorPeriodo(DateTime.Now, DateTime.Now.AddDays(dias));
+            return await PegarPorPeriodo(DateTime.Today, DateTime.Today.AddDays(dias));
         }
 
     }

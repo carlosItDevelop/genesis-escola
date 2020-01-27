@@ -66,7 +66,7 @@ namespace Genesis.Escola.MVC.Controllers
             Set("AlunoLogado", retorno1.Matricula, 2600);
             Set("AlunoNome", retorno1.Nome, 2600);
             Set("AlunoSenha", retorno1.Senha, 2600);
-            Set("AlunoTurma", retorno1.Serie + "-" + retorno1.Turma + "-" + retorno1.Turno, 2600);
+            Set("AlunoTurma", retorno1.Serie + "-" + retorno1.Turma + "-" + retorno1.Turno+ "-" + retorno1.Curso, 2600);
             return RedirectToAction(nameof(Perfil));
         }
         #endregion
@@ -94,8 +94,9 @@ namespace Genesis.Escola.MVC.Controllers
         public async Task<ActionResult> ExibirComunicado(Guid Id)
         {
             if (!AlunoLogado()) return RedirectToAction(nameof(Login));
-            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Comunicado/PegarPdf/";
+            
             var modelComunicado = await _apiComunicado.BuscarAsync(Id);
+            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Comunicado/PegarPdf/";
             return View(modelComunicado);
         }
 
@@ -112,8 +113,8 @@ namespace Genesis.Escola.MVC.Controllers
         public async Task<ActionResult> ExibirCronograma(Guid Id)
         {
             if (!AlunoLogado()) return RedirectToAction(nameof(Login));
-            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Cronograma/PegarPdf/";
             var modelCronograma = await _apiCronograma.BuscarAsync(Id);
+            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Cronograma/PegarPdf/";
             return View(modelCronograma);
         }
 
@@ -130,14 +131,14 @@ namespace Genesis.Escola.MVC.Controllers
         public async Task<ActionResult> ExibirTarefa(Guid Id)
         {
             if (!AlunoLogado()) return RedirectToAction(nameof(Login));
-            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Tarefa/PegarPdf/";
             var modelCronograma = await _apiTarefa.BuscarAsync(Id);
+            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Tarefa/PegarPdf/";
             return View(modelCronograma);
         }
 
         #endregion
 
-        #region Tarefas
+        #region Boletim
         public async Task<ActionResult> Boletim()
         {
             if (!AlunoLogado()) return RedirectToAction(nameof(Login));

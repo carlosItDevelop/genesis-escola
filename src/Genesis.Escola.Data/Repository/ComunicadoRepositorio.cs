@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Genesis.Escola.Data.Repository
 {
@@ -23,26 +24,26 @@ namespace Genesis.Escola.Data.Repository
 
         public async Task<IEnumerable<Comunicado>> PegarPorDataFinal(DateTime fim)
         {
-            IEnumerable<Comunicado> comunicado = await Db.Comunicado.Where(n => n.DataFinal >= DateTime.Now && n.DataFinal.Value <= fim)
+            IEnumerable<Comunicado> comunicado = await Db.Comunicado.Where(n => n.DataFinal >= DateTime.Today && n.DataFinal.Value <= fim)
                                              .Select(n => n).ToListAsync();
-            return comunicado.Where(p => p.DataInicio.Value <= DateTime.Now);
+            return comunicado.Where(p => p.DataInicio.Value <= DateTime.Today);
         }
 
         public async Task<IEnumerable<Comunicado>> PegarAtivas()
         {
-            return await Db.Comunicado.Where(n => n.DataInicio <= DateTime.Now && n.DataFinal.Value >= DateTime.Now)
+            return await Db.Comunicado.Where(n => n.DataInicio <= DateTime.Today && n.DataFinal.Value >= DateTime.Today)
                                              .Select(n => n).ToListAsync();
         }
 
         public async Task<IEnumerable<Comunicado>> PegarAtivas(string turma)
         {
-            return await Db.Comunicado.Where(n => n.DataInicio <= DateTime.Now && n.DataFinal.Value >= DateTime.Now && n.TurmaId == turma )
-                                             .Select(n => n).ToListAsync();
+            return await Db.Comunicado.Where(n => n.DataInicio <= DateTime.Today && n.DataFinal.Value >= DateTime.Today && n.TurmaId.Contains(turma))
+                                 .Select(n => n).ToListAsync(); 
         }
 
         public async Task<IEnumerable<Comunicado>> PegarUltimosDias(int dias)
         {
-            return await PegarPorPeriodo(DateTime.Now, DateTime.Now.AddDays(dias));
+            return await PegarPorPeriodo(DateTime.Today, DateTime.Today.AddDays(dias));
         }
 
     }

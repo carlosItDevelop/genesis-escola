@@ -1,5 +1,6 @@
 ﻿using Genesis.Escola.Business.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 
 namespace Genesis.Escola.Data.Context
@@ -26,6 +27,7 @@ namespace Genesis.Escola.Data.Context
         public DbSet<Cronograma> Cronogramas { get; set; }
         public DbSet<Notas> Notas { get; set; }
         public DbSet<Disciplinas> Disciplinas { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // onde não tiver setado varchar o a propriedade string ficam com varchar(100)
@@ -43,5 +45,6 @@ namespace Genesis.Escola.Data.Context
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }

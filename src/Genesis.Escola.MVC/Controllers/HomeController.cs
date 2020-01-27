@@ -22,12 +22,15 @@ namespace Genesis.Escola.MVC.Controllers
         private readonly SobreApiClient _apiSobre;
         private readonly CarrosselApiClient _apiCarrossel;
         private readonly PoloApiClient _apiPolo;
+        private readonly ConfigApiClient _apiConfiguracao;
         #endregion
 
-        public HomeController(IOptions<SettingsModel> app, 
-                              IConfiguration configuration, 
+        #region Construtor
+        public HomeController(IOptions<SettingsModel> app,
+                              IConfiguration configuration,
                               NoticiasApiClient api,
                               SobreApiClient apiSobre,
+                              ConfigApiClient apiConfiguracao,
                               CarrosselApiClient apiCarrossel,
                               PoloApiClient apiPolo)
         {
@@ -37,10 +40,12 @@ namespace Genesis.Escola.MVC.Controllers
             _apiSobre = apiSobre;
             _apiCarrossel = apiCarrossel;
             _apiPolo = apiPolo;
+            _apiConfiguracao = apiConfiguracao;
             ApplicationSettings.WebApiUrl = appSettings.Value.WebApiBaseUrl;
         }
+        #endregion
 
-
+        #region Index
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Escola Maximu´s";
@@ -48,8 +53,12 @@ namespace Genesis.Escola.MVC.Controllers
             dynamic modelo = new ExpandoObject();
             modelo.Noticias = model.OrderByDescending(c => c.DataInicio);
 
+            var modelConfig = await _apiConfiguracao.BuscarAsync();
+            modelo.Config = modelConfig;
+            ViewData["CaminhoImagemYoutube"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Config/PegarImagem/" + modelConfig.Id;
+
             var modelSobre = await _apiSobre.BuscarAsync();
-            ViewData["CaminhoImagemSobre"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Sobre/PegarImagem/"+modelSobre.Id;
+            ViewData["CaminhoImagemSobre"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Sobre/PegarImagem/" + modelSobre.Id;
             if (modelSobre == null) modelSobre = new SobreViewModel();
             modelo.Sobre = modelSobre;
 
@@ -66,5 +75,6 @@ namespace Genesis.Escola.MVC.Controllers
 
             return View(modelo);
         }
+        #endregion
     }
 }

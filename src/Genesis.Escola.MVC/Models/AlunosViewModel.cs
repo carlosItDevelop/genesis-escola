@@ -22,6 +22,7 @@ namespace Genesis.Escola.MVC.Models
         public string Serie { get; set; }
         public string Turma { get; set; }
         public string Turno { get; set; }
+        public string Curso { get; set; }
         public Guid TurmaId { get; set; }
         public string Numero { get; set; }
 

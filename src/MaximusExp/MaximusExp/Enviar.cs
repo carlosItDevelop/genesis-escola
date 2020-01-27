@@ -79,6 +79,7 @@ namespace MaximusExp
                 #region Limpar Tabelas 
                 MySqlConnection conexao = new MySqlConnection(myConexao);
                 MySqlCommand comando = new MySqlCommand("TRUNCATE TABLE TurmaAcadesc", conexao);
+                MySqlCommand comando1 = new MySqlCommand("TRUNCATE TABLE Alunos", conexao);
                 MySqlCommand comando5 = new MySqlCommand("TRUNCATE TABLE CursoAcadesc", conexao);
                 MySqlCommand comando6 = new MySqlCommand("TRUNCATE TABLE Disciplinas", conexao);
                 MySqlCommand comando10 = new MySqlCommand("TRUNCATE TABLE Notas", conexao);
@@ -87,6 +88,8 @@ namespace MaximusExp
                 {
                     conexao.Open();
                     comando.ExecuteNonQuery();
+                    comando1.ExecuteNonQuery();
+
                     comando5.ExecuteNonQuery();
                     comando6.ExecuteNonQuery();
                     comando10.ExecuteNonQuery();

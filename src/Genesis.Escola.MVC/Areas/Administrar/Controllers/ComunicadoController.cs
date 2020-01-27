@@ -224,7 +224,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                     int i = 0;
                     foreach (var filho in turmas)
                     {
-                        var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
+                        var idNode = filho.Serie.ToString() + '-' + filho.Turma.ToString() + '-' + filho.Turno.ToString() + '-' + filho.Ciclo.ToString();
                         Boolean selecionado = false;
                         if (turma != null)
                         {

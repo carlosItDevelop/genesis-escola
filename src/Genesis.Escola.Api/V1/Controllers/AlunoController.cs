@@ -65,9 +65,18 @@ namespace Genesis.Escola.Api.V1.Controllers
         [HttpGet("{matricula}/{senha}")]
         public async Task<ActionResult<AlunoViewModel>> ObterAluno(string matricula,string senha)
         {
-            var entidade = _mapper.Map<AlunoViewModel>(await _alunoRepositorio.AlunoExiste(matricula, senha));
-            if (entidade == null) return NotFound();
-            return Ok(entidade);
+            try
+            {
+                var entidade = _mapper.Map<AlunoViewModel>(await _alunoRepositorio.AlunoExiste(matricula, senha));
+                if (entidade == null) return NotFound();
+                return Ok(entidade);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
         #endregion
 

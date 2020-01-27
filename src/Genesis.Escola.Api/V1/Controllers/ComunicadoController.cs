@@ -187,11 +187,15 @@ namespace Genesis.Escola.Api.V1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> PdfGetAsync(Guid Id)
         {
-            var galeria = _mapper.Map<ComunicadoViewModel>(await _comunicadoRepositorio.ObterPorId(Id));
-            var webRoot = _env.WebRootPath + galeria.CaminhoImagem;
-            var ext = Path.GetExtension(webRoot);
-            var contents = System.IO.File.ReadAllBytes(webRoot);
-            return File(contents, "application/pdf");
+            var comunicado = _mapper.Map<ComunicadoViewModel>(await _comunicadoRepositorio.ObterPorId(Id));
+            if (!string.IsNullOrEmpty(comunicado.CaminhoImagem))
+            {
+                var webRoot = _env.WebRootPath + comunicado.CaminhoImagem;
+                var ext = Path.GetExtension(webRoot);
+                var contents = System.IO.File.ReadAllBytes(webRoot);
+                return File(contents, "application/pdf");
+            }
+            return null;
         }
         #endregion
     }

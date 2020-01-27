@@ -57,13 +57,16 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [Area("Administrar")]
         public async Task<ActionResult> Adicionar(TarefaViewModel model, IFormFile file, string selectedItems)
         {
-            List<TreeViewNode> itemsRetornados = JsonConvert.DeserializeObject<List<TreeViewNode>>(selectedItems);
             var turma = "";
-
-            foreach (var item in itemsRetornados)
+            if (!string.IsNullOrEmpty(selectedItems))
             {
-                if (item.id.Length > 3) turma += item.id + '|';
+                List<TreeViewNode> itemsRetornados = JsonConvert.DeserializeObject<List<TreeViewNode>>(selectedItems);
+                foreach (var item in itemsRetornados)
+                {
+                    if (item.id.Length > 3) turma += item.id + '|';
+                }
             }
+            else ModelState.AddModelError("", "Deve Selecionar pelo menos uma turma");
 
             ViewBag.Json = JsonConvert.SerializeObject(await BuscarTurma());
 
@@ -121,18 +124,17 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
         [Area("Administrar")]
         public async Task<ActionResult> Editar(Guid id, TarefaViewModel model, IFormFile file, string selectedItems)
         {
-            var turma = "";
 
-            if (selectedItems.Contains("[{\"text"))
+            var turma = "";
+            if (!string.IsNullOrEmpty(selectedItems))
             {
                 List<TreeViewNode> itemsRetornados = JsonConvert.DeserializeObject<List<TreeViewNode>>(selectedItems);
-
                 foreach (var item in itemsRetornados)
                 {
                     if (item.id.Length > 3) turma += item.id + '|';
                 }
             }
-            else turma = selectedItems;
+            else ModelState.AddModelError("", "Deve Selecionar pelo menos uma turma");
 
             ViewBag.Turma = BuscarTurma();
             if (file != null && file.Length > 0)
@@ -219,7 +221,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
                     int i = 0;
                     foreach (var filho in turmas)
                     {
-                        var idNode = filho.Serie.ToString() + '.' + filho.Turma.ToString() + '.' + filho.Turno.ToString() + '.' + filho.Ciclo.ToString();
+                        var idNode = filho.Serie.ToString() + '-' + filho.Turma.ToString() + '-' + filho.Turno.ToString() + '-' + filho.Ciclo.ToString();
                         Boolean selecionado = false;
                         if (turma != null)
                         {
