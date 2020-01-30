@@ -16,6 +16,7 @@ namespace Genesis.Escola.Api.Funcoes
             {
                 return new KeyValuePair<int, string>(1, "Forneça uma imagem!");
             }
+            
             var imageDataByteArray = arquivo;
             string webRoot = caminhoAmbiente + caminho;
 

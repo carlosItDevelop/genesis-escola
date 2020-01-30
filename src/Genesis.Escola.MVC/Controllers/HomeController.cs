@@ -57,6 +57,7 @@ namespace Genesis.Escola.MVC.Controllers
             modelo.Config = modelConfig;
             ViewData["CaminhoImagemYoutube"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Config/PegarImagem/" + modelConfig.Id;
 
+
             var modelSobre = await _apiSobre.BuscarAsync();
             ViewData["CaminhoImagemSobre"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Sobre/PegarImagem/" + modelSobre.Id;
             if (modelSobre == null) modelSobre = new SobreViewModel();

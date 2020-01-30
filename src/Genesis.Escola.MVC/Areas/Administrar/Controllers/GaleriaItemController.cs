@@ -51,6 +51,7 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
             }
             if (ModelState.IsValid)
             {
+                model.Id = Guid.NewGuid();
                 using (MemoryStream mStream = new MemoryStream())
                 {
                     await file.CopyToAsync(mStream);
