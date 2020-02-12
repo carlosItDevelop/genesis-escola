@@ -38,21 +38,21 @@
             <form asp-action="Editar">
                 <input asp-for="Id" class="form-control" type="text" hidden="hidden" />
                 <div asp-validation-summary="All" class="text-danger" />
-
-
+                <input asp-for="UserName" class="form-control" type="text" hidden="hidden" />
+                
                 <div class="form-group has-success">
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-md-4">
                                 <label asp-for="UserName" class="col-form-label">Nome Usuário:</label>
-                                <input asp-for="UserName" class="form-control" readonly />
+                                <input asp-for="UserName" class="form-control" disabled />
                                 <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                             @*<div class="col-md-3">
-                                <br />
-                                <br />
-                                <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Alterar a Senha</span> <i class="ft-zap"></i> </button>
-                            </div>*@
+                        <br />
+                        <br />
+                        <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Alterar a Senha</span> <i class="ft-zap"></i> </button>
+                    </div>*@
                         </div>
                         <br />
                         <div class="row">
@@ -68,12 +68,12 @@
                         </div>
                         <br />
                         @*<div class="row">
-                            <div class="col-md-12">
-                                <label asp-for="Email" class="col-form-label">E-Mail:</label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                        </div>*@
+                    <div class="col-md-12">
+                        <label asp-for="Email" class="col-form-label">E-Mail:</label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>*@
                         <br />
 
                     </div>

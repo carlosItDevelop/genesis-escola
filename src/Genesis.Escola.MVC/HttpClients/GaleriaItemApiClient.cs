@@ -63,5 +63,14 @@ namespace Genesis.Escola.MVC.HttpClients
             resposta.EnsureSuccessStatusCode();
         }
         #endregion
+
+        #region Excluir
+        public async Task ExcluirAsync(Guid id)
+        {
+            AddToken();
+            var resposta = await _httpClient.DeleteAsync($"v1/galeriaitens/{id}");
+            resposta.EnsureSuccessStatusCode();
+        }
+        #endregion
     }
 }

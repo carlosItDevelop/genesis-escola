@@ -309,12 +309,12 @@ namespace MaximusExp
             MySqlDataReader reader = comando.ExecuteReader();
             if (reader.HasRows)
             {
-                strComando = "UPDATE Alunos Set Matricula = @matricula, Nome=@nome,Senha=@senha,Curso=@curso,Serie=@serie,Turma=@turma,Turno=@turno,Numero=@numero,Dtnascimento=@dtnascimento,TextoFinalBoletim=@textoFinalBoletim,RespNome=@respNome,RespEndereco=@respEndereco,RespCidade=@respCidade,RespEstado=@respEstado,RespCep=@respCep,RespEmail=@respEmail,Simbolo=@simbolo where Matricula = @matricula";
+                strComando = "UPDATE Alunos Set Matricula = @matricula, Nome=@nome,Senha=@senha,Curso=@curso,Serie=@serie,Turma=@turma,Turno=@turno,Numero=@numero,Dtnascimento=@dtnascimento,TextoFinalBoletim=@textoFinalBoletim,RespNome=@respNome,RespEndereco=@respEndereco,RespCidade=@respCidade,RespEstado=@respEstado,RespCep=@respCep,RespEmail=@respEmail,Simbolo=@simbolo,TurmaId=@turmaid where Matricula = @matricula";
             }
             else
             {
-                strComando = "INSERT INTO Alunos (Id,Matricula,Nome,Senha,Curso,Serie,Turma,Turno,Numero,Dtnascimento,TextoFinalBoletim,RespNome,RespEndereco,RespCidade,RespEstado,RespCep,RespEmail,Simbolo ) VALUES ";
-                strComando += "(@id,@matricula,@nome,@senha,@curso,@serie,@turma,@turno,@numero,@dtnascimento,@textoFinalBoletim,@respNome,@respEndereco,@respCidade,@respEstado,@respCep,@respEmail,@simbolo)";
+                strComando = "INSERT INTO Alunos (Id,Matricula,Nome,Senha,Curso,Serie,Turma,Turno,Numero,Dtnascimento,TextoFinalBoletim,RespNome,RespEndereco,RespCidade,RespEstado,RespCep,RespEmail,Simbolo,TurmaId ) VALUES ";
+                strComando += "(@id,@matricula,@nome,@senha,@curso,@serie,@turma,@turno,@numero,@dtnascimento,@textoFinalBoletim,@respNome,@respEndereco,@respCidade,@respEstado,@respCep,@respEmail,@simbolo,@turmaid)";
             }
             conexao.Close();
             comando = new MySqlCommand(strComando, conexao);
@@ -338,6 +338,7 @@ namespace MaximusExp
             comando.Parameters.AddWithValue("@respCep", RespCep);
             comando.Parameters.AddWithValue("@respEmail", RespEmail);
             comando.Parameters.AddWithValue("@simbolo", Simbolo);
+            comando.Parameters.AddWithValue("@turmaid", Guid.Empty);
             try
             {
                 conexao.Open();
@@ -462,11 +463,19 @@ namespace MaximusExp
             comando.Parameters.AddWithValue("@v26", v26);
             comando.Parameters.AddWithValue("@v27", v27);
             comando.Parameters.AddWithValue("@v28", v28);
-            comando.Parameters.AddWithValue("@v29", v29);
-            comando.Parameters.AddWithValue("@v30", v30);
-            comando.Parameters.AddWithValue("@v31", v31);
-            comando.Parameters.AddWithValue("@v32", v32);
+
+
+
             double val;
+            double.TryParse(v29, out val);
+            comando.Parameters.AddWithValue("@v29", val);
+            double.TryParse(v30, out val);
+            comando.Parameters.AddWithValue("@v30", val);
+            double.TryParse(v31, out val);
+            comando.Parameters.AddWithValue("@v31", val);
+            double.TryParse(v32, out val);
+            comando.Parameters.AddWithValue("@v32", val);
+
             double.TryParse(v33, out val);
             comando.Parameters.AddWithValue("@v33", val);
             double.TryParse(v34, out val);
@@ -480,7 +489,7 @@ namespace MaximusExp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Não é possível Acessar o Servidor de Internet " +
+                MessageBox.Show("Não é possível Acessar o Servidor de Internet  Gravando Notas" +
                                 " Favor Verificar as Configurações.\n\nErro reportado : " + ex.Message);
             }
             finally

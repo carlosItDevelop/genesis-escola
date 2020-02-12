@@ -83,6 +83,51 @@ namespace Genesis.Escola.MVC.Areas.Administrar.Controllers
 
         #endregion
 
+        [Area("Administrar")]
+        public async Task<ActionResult> Excluir(Guid id)
+        {
+            ViewData["CaminhoImagem"] = _configuration["UrlApi:WebApiBaseUrl"] + "v1/Carrossel/PegarImagem/" + id;
+            var model = await _api.BuscarAsync(id);
+            return null;
+        }
+
+
+        [Area("Administrar")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Excluir(Guid id, GaleriaItensViewModel model1)
+        {
+            var model = await _api.BuscarAsync(id);
+            if (model != null)
+            {
+                await _api.ExcluirAsync(id);
+                return RedirectToAction("Index", "Home");
+            }
+            ModelState.AddModelError("", "Registro não encontrado para Exluir!!! (Pode ter sido excluido por outra pessoa)");
+            return View();
+
+            //ToDo: Fazer o excluir da Galeria
+
+        }
+
+        [Area("Administrar")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Excluir2(Guid id)
+        {
+            var model = await _api.BuscarAsync(id);
+            if (model != null)
+            {
+                await _api.ExcluirAsync(id);
+                return RedirectToAction("Index", "Home");
+            }
+            ModelState.AddModelError("", "Registro não encontrado para Exluir!!! (Pode ter sido excluido por outra pessoa)");
+            return View();
+
+            //ToDo: Fazer o excluir da Galeria
+
+        }
+
 
     }
 }

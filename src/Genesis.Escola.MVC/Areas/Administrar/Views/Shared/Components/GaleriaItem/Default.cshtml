@@ -1,14 +1,28 @@
 ﻿@model IEnumerable<Genesis.Escola.MVC.Models.GaleriaItensViewModel>
 
 
-    <div class="row">
-        @foreach (var item in Model)
-        {
+<div class="row">
+    @foreach (var item in Model)
+    {
         <div class="col s3">
-            <img src="@Url.Content(ViewData["CaminhoImagem"] + item.Id.ToString())" width="250" height="250" />
-            <br />
-            <br />
+            <form asp-action="Excluir">
+                <input class="CodigoExcluir" data-val="true" id="@item.Id" name="@item.Id" type="hidden" value="@item.Id" />
+                <img src="@Url.Content(ViewData["CaminhoImagem"] + item.Id.ToString())" width="250" height="250" />
+                <br />
+                @*<a data-toggle="modal" data-target="#confirm-delete" class="btn btn-primary" onclick="setaDadosModal('@item.Id')">
+                    <span class="btn-label"><i class="fa fa-check"></i></span>Abrir modal
+                </a>
+                <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete" data-id="@item.Id">  <span>Excluir</span> <i class="ft-trash-2"></i> </button>*@
+                <br />
+            </form>
         </div>
 
-        }
-    </div>
+    }
+</div>
+
+<partial name="_Excluir" />
+
+
+
+
+

@@ -127,14 +127,21 @@ namespace Genesis.Escola.Api.V1.Controllers
 
         #region Delete
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<GaleriaItensViewModel>> Excluir(Guid id)
+        public async Task<ActionResult<GaleriaItensViewModel>> Excluir(Guid Id)
         {
-            var galeriaItensViewModel = await _galeriaItemRepositorio.ObterPorId(id);
-            if (galeriaItensViewModel == null) return NotFound();
-            await _galeriaItemService.Remover(id);
+            var galeriaItensViewModel = await _galeriaItemRepositorio.ObterPorId(Id);
+            if (galeriaItensViewModel != null)
+            {
+                var webRoot = _env.WebRootPath + galeriaItensViewModel.CaminhoImagem;
+                var ext = Path.GetExtension(webRoot);
+                System.IO.File.Delete(webRoot);
+                await _galeriaItemService.Remover(Id);
+            }
+
             return CustomResponse(galeriaItensViewModel);
         }
         #endregion
 
     }
+
 }

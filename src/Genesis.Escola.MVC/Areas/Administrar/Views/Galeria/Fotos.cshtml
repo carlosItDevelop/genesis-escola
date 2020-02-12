@@ -58,3 +58,42 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $('.btn-sim').click(function () {
+                var codigo = $("#CodigoExcluir").val();
+
+               // var novaUrl = "/Administrar/Galeria/Fotos";// doByGet('@Url.Action("Excluir","GaleriaItem")');
+                var novaUrl = "@Url.Action("Excluir","GaleriaItem" )";
+                var fullUrl = novaUrl  + '?id=' + codigo;
+                alert(novaUrl);
+                var model = $("#ExcluirDados").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: fullUrl,
+                         data: model,
+                    success: function (dados) {
+                     //   window.location.href = '@Url.Action("Index","Galeria")';
+                    }
+                })
+            });
+
+        });
+
+        function setaDadosModal(valor) {
+            //CodigoExcluir
+           // alert(valor);
+            document.getElementById('CodigoExcluir').value = valor;
+        }
+
+
+        function doByGet(url) {
+            $.get(url);
+        };
+
+    </script>
+}

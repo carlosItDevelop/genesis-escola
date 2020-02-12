@@ -27,6 +27,9 @@ namespace Genesis.Escola.Api.V1.Controllers
         private readonly IMapper _mapper;
         private readonly IGaleriaService _galeriaService;
         private readonly IHostingEnvironment _env;
+        private readonly IGaleriaItensRepositorio _galeriaItemRepositorio;
+        private readonly IGaleriaItensService _galeriaItemService;
+
         #endregion
 
         #region Construtor
@@ -35,12 +38,16 @@ namespace Genesis.Escola.Api.V1.Controllers
                                IGaleriaService galeriaService,
                                IHostingEnvironment env,
                                INotificador notificador,
+                               IGaleriaItensRepositorio galeriaItemRepositorio,
+                               IGaleriaItensService galeriaItemService,
                                IUser user) : base(notificador, user)
         {
             _galeriaRepositorio = galeriaRepositorio;
             _mapper = mapper;
             _galeriaService = galeriaService;
             _env = env;
+            _galeriaItemRepositorio = galeriaItemRepositorio;
+            _galeriaItemService = galeriaItemService;
         }
         #endregion
 
@@ -118,9 +125,32 @@ namespace Genesis.Escola.Api.V1.Controllers
         public async Task<ActionResult<GaleriaViewModel>> Excluir(Guid id)
         {
             var galeriaViewModel = await _galeriaRepositorio.ObterPorId(id);
-            if (galeriaViewModel == null) return NotFound();
+            if (galeriaViewModel != null)
+            {
+               await ExcluirItem(galeriaViewModel.Id);
+            }
+            var webRoot = _env.WebRootPath + galeriaViewModel.CaminhoImagem;
+            System.IO.File.Delete(webRoot);
             await _galeriaService.Remover(id);
             return CustomResponse(galeriaViewModel);
+        }
+        #endregion
+
+        #region Delete
+
+        private async Task<string> ExcluirItem(Guid GaleriaId)
+        {
+            var galeriaItensViewModel = await _galeriaItemRepositorio.PegarFotos(GaleriaId);
+            if (galeriaItensViewModel != null)
+            {
+                foreach (var item in galeriaItensViewModel)
+                {
+                    var webRoot = _env.WebRootPath + item.CaminhoImagem;
+                    System.IO.File.Delete(webRoot);
+                    await _galeriaItemService.Remover(item.Id);
+                }
+            }
+            return null;
         }
         #endregion
 

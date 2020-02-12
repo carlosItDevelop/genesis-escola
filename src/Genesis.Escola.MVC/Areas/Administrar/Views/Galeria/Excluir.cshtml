@@ -35,7 +35,7 @@
         <div class="card-body">
 
             <form asp-action="Excluir" id="ExcluirDados">
-                @Html.HiddenFor(model => model.Id, new { @class = "CodigoExcluir" })>
+                @Html.HiddenFor(model => model.Id, new { @class = "CodigoExcluir" })
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group has-success">
 
@@ -43,7 +43,7 @@
                         <div class="col-lg-12">
                             <div class="form-group ">
                                 <label asp-for="Titulo" class="control-label"></label>
-                                <input asp-for="Titulo" class="form-control" readonly="readonly"  />
+                                <input asp-for="Titulo" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="Titulo" class="text-danger"></span>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
 
                     <div class="form-group">
                         <label asp-for="Descricao" class="control-label"></label>
-                        <textarea asp-for="Descricao" class="form-control" rows="4" readonly="readonly" ></textarea>
+                        <textarea asp-for="Descricao" class="form-control" rows="4" readonly="readonly"></textarea>
                         <span asp-validation-for="Descricao" class="text-danger"></span>
                     </div>
                 </div>
@@ -59,12 +59,12 @@
                 <div class="row">
                     <div class="col-md-7">
                         @*<fieldset class="form-group">
-                            <label for="basicInputFile">Imagem</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="image/*">
-                                <label class="custom-file-label" for="File1"></label>
-                            </div>
-                        </fieldset>*@
+                    <label for="basicInputFile">Imagem</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="File" name="File" onchange="ValidateSize(this)" accept="image/*">
+                        <label class="custom-file-label" for="File1"></label>
+                    </div>
+                </fieldset>*@
                     </div>
                     <div class="col-md-5">
 
@@ -74,19 +74,19 @@
                     </div>
                 </div>
                 <br />
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-icon btn-outline-success waves-effect waves-light width-md" type="submit">  <span>Salvar</span> <i class="mdi mdi-content-save-outline"></i> </button>
-                            <a asp-action="Index" class="btn btn-icon btn-outline-primary waves-effect waves-light width-md">Voltar a Listagem <i class="mdi mdi-keyboard-backspace"></i> </a>
-                        </div>
-                    </div>
+                <div class="form-actions">
+                    <a href="@Url.Action("Index", "EmailContato")" class="btn btn-outline-warning mr-1">
+                        Retornar <span class="ft-x"></span>
+                    </a>
+                    <button class="btn btn-icon btn-outline-danger waves-effect waves-light width-md" type="button" data-toggle="modal" data-target="#confirm-delete">  <span>Excluir</span> <i class="ft-trash-2"></i> </button>
                 </div>
             </form>
 
         </div>
     </div>
 </div>
+
+<partial name="_Excluir" />
 
 @section Styles
 {
@@ -117,7 +117,27 @@
                     reader.readAsDataURL(file[0]);
                 });
             });
+
+            $('.btn-sim').click(function () {
+                var codigo = $(".CodigoExcluir").val();
+                var novaUrl = doByGet('@Url.Action("Excluir","Galeria")');
+               // alert(novaUrl);
+                var model = $("#ExcluirDados").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: novaUrl,
+                    data: model,
+                    success: function (dados) {
+                        window.location.href = '@Url.Action("Index","Galeria")';
+                    }
+                });
+            });
+
         });
+
+        function doByGet(url) {
+            $.get(url);
+        };
 
         function ValidateSize(file) {
             var FileSize = file.files[0].size / 1024 / 1024; // in MB

@@ -1,13 +1,11 @@
 ﻿using Genesis.Escola.MVC.Models;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MimeKit;
-using MimeKit.Text;
 using System.IO;
-using System.Security.Authentication;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using static Genesis.Escola.MVC.Functions.Enumeradores;
 
@@ -23,61 +21,104 @@ namespace Genesis.Escola.MVC.services
             _configuration = configuration;
             _logger = logger;
         }
-        public async Task SendEmail(string email, string nome, string assunto, string menssagem, string para, ConfigViewModel config, EnumTipoEmail tipo, IFormFile anexo = null)
+
+
+        public async Task SendEmail(string email, string nome, string assunto, string mensagem, string para, ConfigViewModel config, EnumTipoEmail tipo, IFormFile anexo = null)
         {
-            var message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress(nome, email));
-            if (tipo == EnumTipoEmail.TrabalheConosco)
+            using (MailMessage mm = new MailMessage(email, para))
             {
-                message.To.Add(new MailboxAddress("E-mail Enviado pelo Site", config.EmailRetTrabalhe));
-                message.Subject = "Enviado Pelo Site: Curriculum ";
-            }
-            else
-            {
-                message.To.Add(new MailboxAddress("E-mail Enviado pelo Site", para));
-                message.Subject = "Enviado Pelo Site: " + assunto;
-            }
+                //mm.Subject = "Curriculum Enviado pelo site ";
+                mm.IsBodyHtml = true;
+                var corpoEmail = new StringBuilder();
+                var estilo1 = " style=" + '"' + "font-family:Tahoma, Geneva, sans-serif !important;" + ";font-size:36px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:inherit;background-color:#34696d;color:#ffffff;text-align:center;vertical-align:top" + '"' + "colspan=" + '"' + "2" + '"';
+                var estilo2 = " style=" + '"' + "font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:inherit;text-align:right;vertical-align:top" + '"';
+                var estilo3 = " style=" + '"' + "font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:inherit;text-align:left;vertical-align:top" + '"';
 
-            var builder = new BodyBuilder { HtmlBody = menssagem + "<br/><br/> A mensagem foi enviada por: " + nome + " E-mail: " + email };
-
-            if (anexo != null)
-            {
-                using (MemoryStream memoryStream = new MemoryStream())
+                if (tipo == EnumTipoEmail.Contato)
                 {
-                    await anexo.CopyToAsync(memoryStream);
-                    builder.Attachments.Add(anexo.FileName, memoryStream.ToArray());
+                    corpoEmail = new StringBuilder();
+                    corpoEmail.AppendLine("<html>");
+                    corpoEmail.AppendLine("<body style=" + '"' + "margin: 0; padding: 0; " + '"' + ">");
+                    corpoEmail.AppendLine("<table style=" + '"' + "border-collapse:collapse; border-spacing:0" + '"' + " class=" + '"' + "tg" + '"' + ">");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<th" + estilo1 + ">" + "Contato do Site" + "</th>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "Nome:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + nome + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "E-Mail:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + email + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "Assunto:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + assunto + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "Mensagem:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + mensagem + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("</table>");
+                    corpoEmail.AppendLine("</body>");
+                    mm.Subject = "Enviado Pelo Site - Contato " ;
+                }
+                else
+                {
+                    corpoEmail = new StringBuilder();
+                    corpoEmail.AppendLine("<html>");
+                    corpoEmail.AppendLine("<body style=" + '"' + "margin: 0; padding: 0; " + '"' + ">");
+                    corpoEmail.AppendLine("<table style=" + '"' + "border-collapse:collapse; border-spacing:0" + '"' + " class=" + '"' + "tg" + '"' + ">");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<th" + estilo1 + ">" + "Contato do Site" + "</th>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "Nome:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + nome + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "E-Mail:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + email + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("<td" + estilo2 + ">" + "Mensagem:" + "</td>");
+                    corpoEmail.AppendLine("<td" + estilo3 + ">" + mensagem + "</td>");
+                    corpoEmail.AppendLine("</tr>");
+                    corpoEmail.AppendLine("<tr>");
+                    corpoEmail.AppendLine("</table>");
+                    corpoEmail.AppendLine("</body>");
+                    mm.Subject = "Enviado Pelo Site - Trabalhe Conosco";
+                }
+
+
+
+                mm.Body = corpoEmail.ToString();
+                if (anexo != null)
+                {
+                    if (anexo.Length > 0)
+                    {
+                        string fileName = Path.GetFileName(anexo.FileName);
+                        mm.Attachments.Add(new Attachment(anexo.OpenReadStream(), fileName));
+                    }
+                }
+                using (System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient())
+                {
+                    smtp.Host = config.EmailHost;
+                    smtp.EnableSsl = config.EmailSsl;
+                    NetworkCredential NetworkCred = new NetworkCredential(config.EmailEnvio, config.EmailSenha);
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = NetworkCred;
+                    smtp.Port = config.EmailPorta;
+                    smtp.Send(mm);
                 }
             }
-            _logger.LogWarning("Erro :: Email -> Iniciando");
-            message.Body = builder.ToMessageBody();
-            //Configure the e-mail
-            try
-            {
-                using (var emailClient = new SmtpClient())
-                {
-                    emailClient.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Ssl2;
-
-                    emailClient.Connect(config.EmailHost, config.EmailPorta, config.EmailSsl);
-                    emailClient.Authenticate(config.EmailEnvio.Trim(), config.EmailSenha.Trim());
-
-                    emailClient.Send(message);
-                    emailClient.Disconnect(true);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                _logger.LogWarning("Erro :: Email -> " + ex.Message);
-                
-            }
-
 
 
             await Task.CompletedTask;
         }
-
-
-
 
     }
 }

@@ -204,6 +204,8 @@ namespace Genesis.Escola.Api.V1.Controllers
             user.Email = userViewModel.Email;
             user.NomeCompleto = userViewModel.NomeCompleto;
             user.UserName = userViewModel.UserName;
+            user.Permissao = userViewModel.Permissao;
+
             var result = await _userManager.UpdateAsync(user);
             return Ok(result);
 

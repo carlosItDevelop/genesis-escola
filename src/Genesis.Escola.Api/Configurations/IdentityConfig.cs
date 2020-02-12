@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.AspNetCore.Http;
 
 namespace Genesis.Escola.Api.Configurations
 {
@@ -19,8 +20,7 @@ namespace Genesis.Escola.Api.Configurations
         {
             //        services.AddDbContext<ApplicationDbContext>(options =>
             //options.UseSqlServer(configuration.GetConnectionString("ApiConnection")));
-            services.AddDbContext<ApplicationDbContext>(options =>
-options.UseMySql(configuration.GetConnectionString("ApiConnectionMy")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(configuration.GetConnectionString("ApiConnectionMy")));
 
             services.AddDefaultIdentity<UsuarioViewModel>()
                     .AddRoles<IdentityRoleViewModel>()
@@ -54,8 +54,10 @@ options.UseMySql(configuration.GetConnectionString("ApiConnectionMy")));
             {
                 x.RequireHttpsMetadata = true;
                 x.SaveToken = true;
+
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
+                    
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
@@ -63,6 +65,21 @@ options.UseMySql(configuration.GetConnectionString("ApiConnectionMy")));
                     ValidAudience = appSettings.ValidoEm,
                     ValidIssuer = appSettings.Emissor
                 };
+
+                x.Events = new JwtBearerEvents()
+                {
+                    OnAuthenticationFailed = c =>
+                    {
+                        c.NoResult();
+
+                        c.Response.StatusCode = 401;
+                        c.Response.ContentType = "text/plain";
+
+                        return c.Response.WriteAsync(c.Exception.ToString());
+                    }
+
+                };
+
             });
 
             return services;

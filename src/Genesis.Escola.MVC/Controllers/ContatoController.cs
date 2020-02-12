@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Genesis.Escola.MVC.Functions;
 using Genesis.Escola.MVC.HttpClients;
 using Genesis.Escola.MVC.Models;
 using Genesis.Escola.MVC.services;
-using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MimeKit;
-using MimeKit.Text;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using static Genesis.Escola.MVC.Functions.Enumeradores;
 
 namespace Genesis.Escola.MVC.Controllers
@@ -151,6 +149,7 @@ namespace Genesis.Escola.MVC.Controllers
             {
                 var modelConfig = await _api.BuscarAsync();
                 await _emailService.SendEmail(emailsViewModel.Email, emailsViewModel.Nome, "", emailsViewModel.Mensagem,modelConfig.EmailRetTrabalhe, modelConfig, EnumTipoEmail.TrabalheConosco,file);
+
                 return RedirectToAction(nameof(Recebido));
             }
             return View(emailsViewModel);
